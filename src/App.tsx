@@ -1,7 +1,8 @@
 import firebase from 'firebase/app';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { RegistrationPage } from './pages';
+import { LoginPage } from './pages/Login';
 
 export const App = () => {
   const [user, loading, error]: [
@@ -27,7 +28,11 @@ export const App = () => {
   // Un-Authed (Sign Up + Sign In + Reset Password) Case
   return (
     <BrowserRouter>
-      <Route path='/register' component={RegistrationPage} />
+      <Switch>
+        <Route path='/register' component={RegistrationPage} />
+        <Route path='/login' component={LoginPage} />
+        <Route exact path='/' component={() => <Redirect to='/login' />} />
+      </Switch>
     </BrowserRouter>
   );
 };
