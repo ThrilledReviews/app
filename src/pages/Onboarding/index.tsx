@@ -1,7 +1,9 @@
 import firebase from 'firebase/app';
 import { FormEvent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 export const OnboardingPage = () => {
+  const history = useHistory();
   const [error, setError] = useState('');
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
@@ -12,8 +14,11 @@ export const OnboardingPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(areaCode);
     firebase.functions().httpsCallable('lol');
   };
+
+  history.replace('/onboarding');
 
   return (
     <div className='max-w-7xl mx-auto p-4 sm:p-6 lg:p-8'>
@@ -22,7 +27,7 @@ export const OnboardingPage = () => {
           <div>
             <div>
               <h1 className='text-3xl pb-8 text-center font-medium text-gray-900'>
-                FivesFilter Onboarding
+                FivesFilter Setup
               </h1>
               <hr className='p-2' />
               <h3 className='text-lg  font-medium text-gray-900'>
@@ -79,7 +84,7 @@ export const OnboardingPage = () => {
             <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5'>
               <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
                 <label className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'>
-                  Business Username (Lowercase Letters + Numbers)
+                  Business Username (Letters, Numbers and Underscores)
                 </label>
                 <div className='mt-1 sm:mt-0 sm:col-span-2'>
                   <div className='max-w-lg flex rounded-md shadow-sm'>
@@ -87,7 +92,7 @@ export const OnboardingPage = () => {
                       required
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      placeholder='abcplumbing'
+                      placeholder='abc_plumbing'
                       type='text'
                       autoComplete='businessUsername'
                       className='flex-1 block w-full focus:ring-blue-500 focus:border-blue-500 min-w-0 rounded-md sm:text-sm border-gray-300'
@@ -153,7 +158,7 @@ export const OnboardingPage = () => {
                     htmlFor='username'
                     className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
                   >
-                    Your Cell Phone # (optional but recommended)
+                    Your Cell Phone # (We won't spam you!)
                   </label>
                   <div className='mt-1 sm:mt-0 sm:col-span-2'>
                     <div className='max-w-lg flex rounded-md shadow-sm'>
@@ -173,7 +178,7 @@ export const OnboardingPage = () => {
           </div>
           <div className='divide-y divide-gray-200 pt-8 space-y-6 sm:pt-10 sm:space-y-5'>
             <div>
-              <h3 className='text-lg leading-6 font-medium text-gray-900'>Terms For Use</h3>
+              <h3 className='text-lg leading-6 font-medium text-gray-900'>Terms Of Use</h3>
               <p className='mt-1 max-w-2xl text-sm text-gray-500'>
                 There are some important legal requirements for using this service that we need you
                 to understand.
