@@ -1,7 +1,7 @@
 import firebase from 'firebase/app';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { forgotPasswordRoute, LoginRoute, registerRoute } from '../../constants/routes';
+import { forgotPasswordRoute, registerRoute } from '../../constants/routes';
 import loginPicture from '../../images/login.jpg';
 
 export const LoginPage = () => {

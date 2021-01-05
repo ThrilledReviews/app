@@ -1,9 +1,25 @@
+import { useState } from 'react';
 import firebase from 'firebase/app';
 import { Link } from 'react-router-dom';
 import { LoginRoute } from '../../constants/routes';
-import registerPicture from '../../images/register.jpg';
+import starsPicture from '../../images/login.jpg';
 
 export const RegistrationPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .catch((error: firebase.auth.Error) => {
+        setError(error.message);
+      });
+  };
+
   return (
     <div className='min-h-screen bg-white flex'>
       <div className='flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24'>
@@ -21,13 +37,15 @@ export const RegistrationPage = () => {
           </div>
 
           <div className='mt-5'>
-            <form action='#' method='POST' className='space-y-6'>
+            <form onSubmit={(e) => handleSubmit(e)} className='space-y-6'>
               <div>
                 <label htmlFor='email' className='block text-sm font-medium text-gray-700'>
                   Email address
                 </label>
                 <div className='mt-1'>
                   <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     id='email'
                     name='email'
                     type='email'
@@ -44,6 +62,8 @@ export const RegistrationPage = () => {
                 </label>
                 <div className='mt-1'>
                   <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     id='password'
                     name='password'
                     type='password'
@@ -77,6 +97,7 @@ export const RegistrationPage = () => {
               <p className='mt-1 text-center text-sm text-gray-500'>
                 By Signing Up, You Agree To Our Terms of Service & Privacy Policy
               </p>
+              <p className='mt-1 text-center text-sm text-red-500'>{error}</p>
             </form>
           </div>
         </div>
@@ -84,7 +105,7 @@ export const RegistrationPage = () => {
       <div className='hidden lg:block relative w-0 flex-1'>
         <img
           className='absolute inset-0 h-full w-full object-cover'
-          src={registerPicture}
+          src={starsPicture}
           alt='Worker Smiling'
         />
       </div>
