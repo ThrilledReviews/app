@@ -32,7 +32,7 @@ export const App = () => {
       <Switch>
         <Route path={registerRoute} component={RegistrationPage} />
         <Route path={loginRoute} component={LoginPage} />
-        <Route exact path={indexRoute} component={() => <Redirect to='/login' />} />
+        <Route exact path={indexRoute} component={() => <Redirect to={loginRoute} />} />
       </Switch>
     </BrowserRouter>
   );

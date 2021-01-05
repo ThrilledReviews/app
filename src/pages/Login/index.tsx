@@ -31,7 +31,7 @@ export const LoginPage = () => {
             <p className='mt-2 text-sm text-gray-600 max-w'>
               Or{' '}
               <Link to={registerRoute} className='font-medium text-blue-600 hover:text-blue-500'>
-                Start Your 14-Day Free Trial
+                Start Your Demo {'>'}
               </Link>
             </p>
           </div>
@@ -93,6 +93,16 @@ export const LoginPage = () => {
                   Sign in
                 </button>
               </div>
+              <p className='mt-1 text-center text-sm text-gray-500'>
+                By Logging In, You're Agreeing To Our{' '}
+                <a href='/terms' className='text-blue-500'>
+                  Terms of Service
+                </a>{' '}
+                &{' '}
+                <a href='/privacy' className='text-blue-500'>
+                  Privacy Policy
+                </a>
+              </p>
               <p className='text-center text-red-500'>{error}</p>
             </form>
           </div>

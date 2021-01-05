@@ -8,4 +8,6 @@ export const forgotPasswordRoute = '/forgot-password';
 
 // Authed Routes
 export const homeRoute = '/home';
-export const statsRoute = '/stats';
+export const analyticsRoute = '/analytics';
+export const messageSettingsRoute = '/message-settings';
+export const accountSettingsRoute = '/account-settings';

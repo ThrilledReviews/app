@@ -26,12 +26,12 @@ export const RegistrationPage = () => {
         <div className='mx-auto w-full max-w-sm lg:w-96'>
           <div>
             <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
-              Start Your 14-Day FivesFilter Trial Now!
+              Start Your FivesFilter Demo Now!
             </h2>
             <p className='mt-2 text-sm text-gray-600 max-w'>
               Or{' '}
               <Link to={loginRoute} className='font-medium text-blue-600 hover:text-blue-500'>
-                Sign Into Your Account
+                Sign Into Your Account {'>'}
               </Link>
             </p>
           </div>
@@ -95,7 +95,14 @@ export const RegistrationPage = () => {
               </div>
 
               <p className='mt-1 text-center text-sm text-gray-500'>
-                By Signing Up, You Agree To Our Terms of Service & Privacy Policy
+                By Signing Up, You Agreeing To Our{' '}
+                <a href='/terms' className='text-blue-500'>
+                  Terms of Service
+                </a>{' '}
+                &{' '}
+                <a href='/privacy' className='text-blue-500'>
+                  Privacy Policy
+                </a>
               </p>
               <p className='mt-1 text-center text-sm text-red-500'>{error}</p>
             </form>

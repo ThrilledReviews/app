@@ -1,5 +1,11 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  accountSettingsRoute,
+  homeRoute,
+  messageSettingsRoute,
+  analyticsRoute,
+} from '../constants/routes';
 
 export const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,9 +24,9 @@ export const Navigation = () => {
                 <div className='ml-10 flex items-baseline space-x-4'>
                   {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
                   <Link
-                    to={DashboardRoute}
+                    to={homeRoute}
                     className={`${
-                      pathname === DashboardRoute
+                      pathname === homeRoute
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     } px-3 py-2 rounded-md text-sm font-medium'`}
@@ -29,36 +35,36 @@ export const Navigation = () => {
                   </Link>
 
                   <Link
-                    to={ReportsRoute}
+                    to={analyticsRoute}
                     className={`${
-                      pathname === ReportsRoute
+                      pathname === analyticsRoute
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     } px-3 py-2 rounded-md text-sm font-medium'`}
                   >
-                    Reports
+                    Stat
                   </Link>
 
                   <Link
-                    to={BulkRequestRoute}
+                    to={messageSettingsRoute}
                     className={`${
-                      pathname === BulkRequestRoute
+                      pathname === messageSettingsRoute
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     } px-3 py-2 rounded-md text-sm font-medium'`}
                   >
-                    Bulk Upload
+                    Message Settings
                   </Link>
 
                   <Link
-                    to={SettingsRoute}
+                    to={accountSettingsRoute}
                     className={`${
-                      pathname === SettingsRoute
+                      pathname === accountSettingsRoute
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     } px-3 py-2 rounded-md text-sm font-medium'`}
                   >
-                    Settings
+                    Account Settings
                   </Link>
                 </div>
               </div>
@@ -126,24 +132,30 @@ export const Navigation = () => {
           <div className='px-2 pt-2 pb-3 space-y-1 sm:px-3'>
             {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
             <Link
-              to={DashboardRoute}
+              to={homeRoute}
               className='bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium'
             >
-              Dashboard
+              Home
             </Link>
 
             <Link
-              to={ReportsRoute}
+              to={analyticsRoute}
               className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
             >
-              Reports
+              Analytics
             </Link>
 
             <Link
-              to={SettingsRoute}
+              to={messageSettingsRoute}
               className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
             >
-              Settings
+              Message Settings
+            </Link>
+            <Link
+              to={accountSettingsRoute}
+              className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+            >
+              Message Settings
             </Link>
           </div>
         </div>
