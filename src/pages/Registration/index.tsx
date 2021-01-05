@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import firebase from 'firebase/app';
 import { Link } from 'react-router-dom';
-import { LoginRoute } from '../../constants/routes';
-import starsPicture from '../../images/login.jpg';
+import { loginRoute } from '../../constants/routes';
+import starsPicture from '../../images/stars.jpg';
 
 export const RegistrationPage = () => {
   const [email, setEmail] = useState('');
@@ -30,7 +30,7 @@ export const RegistrationPage = () => {
             </h2>
             <p className='mt-2 text-sm text-gray-600 max-w'>
               Or{' '}
-              <Link to={LoginRoute} className='font-medium text-blue-600 hover:text-blue-500'>
+              <Link to={loginRoute} className='font-medium text-blue-600 hover:text-blue-500'>
                 Sign Into Your Account
               </Link>
             </p>

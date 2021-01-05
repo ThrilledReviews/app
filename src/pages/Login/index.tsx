@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { forgotPasswordRoute, registerRoute } from '../../constants/routes';
-import loginPicture from '../../images/login.jpg';
+import loginPicture from '../../images/stars.jpg';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');

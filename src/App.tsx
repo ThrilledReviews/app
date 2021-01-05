@@ -3,6 +3,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { RegistrationPage } from './pages';
 import { LoginPage } from './pages/Login';
+import { indexRoute, loginRoute, registerRoute } from './constants/routes';
 
 export const App = () => {
   const [user, loading, error]: [
@@ -29,9 +30,9 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path='/register' component={RegistrationPage} />
-        <Route path='/login' component={LoginPage} />
-        <Route exact path='/' component={() => <Redirect to='/login' />} />
+        <Route path={registerRoute} component={RegistrationPage} />
+        <Route path={loginRoute} component={LoginPage} />
+        <Route exact path={indexRoute} component={() => <Redirect to='/login' />} />
       </Switch>
     </BrowserRouter>
   );
