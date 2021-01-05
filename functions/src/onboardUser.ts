@@ -51,5 +51,5 @@ export const handleOnboardUser = async (
 
   await admin.firestore().collection('users').doc(context.auth.uid).set(data);
 
-  return;
+  return { status: 204, message: 'Successfully Onboarded User' };
 };
