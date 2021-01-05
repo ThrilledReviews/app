@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { homeRoute, onboardingRoute } from '../../constants/routes';
 
 export const OnboardingPage = () => {
   const history = useHistory();
@@ -15,10 +16,24 @@ export const OnboardingPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(areaCode);
-    firebase.functions().httpsCallable('lol');
+    firebase
+      .functions()
+      .httpsCallable('onboardUser')({
+        fullName,
+        username,
+        businessName,
+        reviewUrl,
+        areaCode,
+        notificationPhoneNumber,
+      })
+      .then(() => history.replace(homeRoute))
+      .catch((error) => {
+        setError(error.message);
+      });
   };
 
-  history.replace('/onboarding');
+  console.log(error);
+  history.replace(onboardingRoute);
 
   return (
     <div className='max-w-7xl mx-auto p-4 sm:p-6 lg:p-8'>
@@ -107,7 +122,7 @@ export const OnboardingPage = () => {
                   htmlFor='reviewUrl'
                   className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
                 >
-                  Review Page Full URL{' '}
+                  Your Business's Review Page Full URL{' '}
                   <a
                     href='https://fivesfilter.com/support/reviewPages'
                     target='_blank'
@@ -135,7 +150,7 @@ export const OnboardingPage = () => {
               <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5'>
                 <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
                   <label className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'>
-                    Your Business Phone's Area Code
+                    Your Business's Area Code
                   </label>
                   <div className='mt-1 sm:mt-0 sm:col-span-2'>
                     <div className='max-w-lg flex rounded-md shadow-sm'>
@@ -190,14 +205,7 @@ export const OnboardingPage = () => {
               <div className='pt-6 sm:pt-5'>
                 <div role='group' aria-labelledby='label-email'>
                   <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline'>
-                    <div>
-                      <div
-                        className='text-base font-medium text-gray-900 sm:text-sm sm:text-gray-700'
-                        id='label-email'
-                      >
-                        By Email
-                      </div>
-                    </div>
+                    <div />
                     <div className='mt-4 sm:mt-0 sm:col-span-2'>
                       <div className='max-w-lg space-y-4'>
                         <div className='relative flex items-start'>
@@ -215,9 +223,9 @@ export const OnboardingPage = () => {
                               No Promotional Messages
                             </label>
                             <p className='text-gray-500'>
-                              NEVER promote, sell, or market anything whatsoever with our service
-                              <br />
-                              Transactional Messages ONLY. Not sure?{' '}
+                              I will NEVER promote, sell, or market anything whatsoever with the
+                              service.
+                              <br />I will send transactional messages ONLY. Not sure?{' '}
                               <a className='text-blue-500' href='mailto:fritz@FivesFilter.com'>
                                 Ask us.
                               </a>
@@ -237,11 +245,11 @@ export const OnboardingPage = () => {
                             </div>
                             <div className='ml-3 text-sm'>
                               <label htmlFor='candidates' className='font-medium text-red-700'>
-                                No Cold Outreach
+                                Recent, Express Consent
                               </label>
                               <p className='text-gray-500'>
-                                You must ONLY use our service to contact existing customers who have
-                                knowingly given you their phone #
+                                I will ONLY use the service to contact existing customers who have
+                                knowingly given me their phone #, and who I served in the last week.
                               </p>
                             </div>
                           </div>
@@ -262,14 +270,15 @@ export const OnboardingPage = () => {
                                 Only For Soliciting Feedback
                               </label>
                               <p className='text-gray-500'>
-                                Our service must ONLY be used to solicit customer feedback & reviews
-                                - NEVER for any other purpose
+                                I will ONLY use the service to solicit customer feedback & reviews,{' '}
+                                <br />
+                                NEVER for any other purpose
                               </p>
                             </div>
                           </div>
                         </div>
                         <p className='text-center text-red-500 font-bold'>
-                          Breaking These Terms Means You're Breaking Federal Law
+                          Breaking These Terms Could Mean Breaking Federal Law
                         </p>
                       </div>
                     </div>

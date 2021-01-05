@@ -1,7 +1,13 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as toix from '@toi/toix';
-import { isAreaCode, isElevenDigitPhone, isName } from './utils/validation';
+import {
+  isAreaCode,
+  isBusinessName,
+  isElevenDigitPhone,
+  isFullName,
+  isUrl,
+  isUsername,
+} from './utils/validation';
 
 interface OnboardData {
   fullName: string;
@@ -18,12 +24,19 @@ export const handleOnboardUser = async (
   data: OnboardData,
   context: functions.https.CallableContext
 ) => {
-  if (!context.auth) throw new Error('User Must Be Signed In');
+  if (!context.auth) return { status: 401, message: 'User Must Be Signed In' };
 
   // input validation
-  isName(data.fullName);
-  isAreaCode(data.areaCode);
-  isElevenDigitPhone(data.notificationPhoneNumber);
+  try {
+    isFullName(data.fullName);
+    isUsername(data.username);
+    isBusinessName(data.businessName);
+    isAreaCode(data.areaCode);
+    isElevenDigitPhone(data.notificationPhoneNumber);
+    isUrl(data.reviewUrl);
+  } catch (error) {
+    return { status: 400, message: error.message };
+  }
 
   // check for existing usernames
   const usernameMatch = await admin
@@ -34,5 +47,9 @@ export const handleOnboardUser = async (
     .get();
 
   if (usernameMatch.docs.length !== 0)
-    throw new Error('Username Is Already Taken, Pick Something Else');
+    return { status: 400, message: 'Username already taken. Pick something else' };
+
+  await admin.firestore().collection('users').doc(context.auth.uid).set(data);
+
+  return;
 };
