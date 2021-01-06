@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 
-interface FeedbackRequest {
+export interface FeedbackRequest {
   customerName: string;
   phoneNumber: string;
   resultNumber: number;
@@ -40,7 +40,7 @@ export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackReq
                 '⚫⚫⚫⚫⚫'.slice(feedbackRequest.resultNumber, 5)}
             </span>
           ) : (
-            'No Review'
+            'No Review Yet'
           )}
         </div>
         {/* <!-- Repo meta info --> */}
@@ -50,9 +50,7 @@ export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackReq
               <>
                 <span aria-hidden='true'>&middot;</span>
                 <span className='font-bold'>
-                  {feedbackRequest.reviewLinkClicked
-                    ? 'Review Link Clicked!'
-                    : 'Review Link Not Clicked'}
+                  {feedbackRequest.reviewLinkClicked ? 'Review Link Clicked!' : ''}
                 </span>
               </>
             )}

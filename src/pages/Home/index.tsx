@@ -4,13 +4,22 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
+import { loadStripe } from '@stripe/stripe-js';
 import { accountSettingsRoute, analyticsRoute, homeRoute } from '../../constants/routes';
-import { MainListItem } from './MainListItem';
+import { MainListItem, FeedbackRequest } from './MainListItem';
 
 export const HomePage = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user] = useAuthState(firebase.auth());
+  const [subscriptions] = useCollectionData(
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .collection('subscriptions')
+      .where('status', 'in', ['active'])
+  ) as [any, any, any];
   const [userDoc] = useDocumentData(firebase.firestore().collection('users').doc(user?.uid)) as [
     any,
     any,
@@ -19,6 +28,70 @@ export const HomePage = () => {
   const [feedbackRequests] = useCollectionData(
     firebase.firestore().collection('users').doc(user?.uid).collection('feedbackRequests').limit(10)
   ) as [any, boolean, any];
+
+  const demoFeedbackRequests: FeedbackRequest[] = [
+    {
+      customerName: 'Joey Valentino',
+      phoneNumber: '+15558859234',
+      reviewLinkClicked: true,
+      resultNumber: 5,
+      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+    },
+    {
+      customerName: 'Quinn Romanov',
+      phoneNumber: '+15552359234',
+      reviewLinkClicked: false,
+      resultNumber: 3,
+      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+    },
+    {
+      customerName: 'Janet Koch',
+      phoneNumber: '+15555232234',
+      reviewLinkClicked: false,
+      resultNumber: -1,
+      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+    },
+    {
+      customerName: 'Morpheus Fishburne',
+      phoneNumber: '+15558859234',
+      reviewLinkClicked: false,
+      resultNumber: 5,
+      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+    },
+  ];
+
+  const subscribe = async () => {
+    const docRef = await firebase
+      .firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('checkout_sessions')
+      .add({
+        line_items: [
+          { price: 'price_1I6hbRLjqDOPvfebhfgaPZSj', quantity: 1 },
+          // { price: 'price_1I6RbJLjqDOPvfebM2HS1UVB' },
+        ],
+        success_url: window.location.origin,
+        cancel_url: window.location.origin,
+      });
+
+    docRef.onSnapshot(async (snap) => {
+      const { error, sessionId } = snap.data() as { error: Error; sessionId: string };
+      if (error) {
+        // Show an error to your customer and
+        // inspect your Cloud Function logs in the Firebase console.
+        alert(`An error occured: ${error.message}`);
+      }
+      if (sessionId) {
+        // We have a session, let's redirect to Checkout
+        // Init Stripe
+        const stripe = await loadStripe(
+          'pk_live_51HzhyWLjqDOPvfebFx6IB2VX0ABcpz8mt8MRQ2SXVWjbz5zo2uWJergpucp5fsWF13rpoEsySpWr2WjKjXLmVU5W00vhX2yK7Y'
+        );
+        stripe?.redirectToCheckout({ sessionId });
+      }
+    });
+  };
 
   return (
     <>
@@ -132,7 +205,9 @@ export const HomePage = () => {
                       Analytics
                     </Link>
                     <a
-                      href='mailto:fritz@workhorsesw.com'
+                      href={`mailto:fritz@workhorsesw.com?subject=${encodeURIComponent(
+                        'FivesFilter Support Request for Account ' + user?.uid
+                      )}`}
                       target='_blank'
                       rel='noreferrer'
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
@@ -213,6 +288,46 @@ export const HomePage = () => {
               </div>
             </div>
           </div>
+          {subscriptions?.length === 0 && (
+            <div className='bg-blue-800'>
+              <div className='max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8'>
+                <div className='flex items-center justify-between flex-wrap'>
+                  <div className='w-0 flex-1 sm:flex items-center hidden'>
+                    <span className='flex p-2 rounded-lg bg-blue-900 border-white border'>
+                      <svg
+                        className='h-6 w-6 text-white'
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={2}
+                          d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+                        />
+                      </svg>
+                    </span>
+                    <p className='ml-3 font-medium text-white truncate'>
+                      <span className='md:hidden'>You're using the demo version.</span>
+                      <span className='hidden md:inline'>
+                        You're viewing the demo version of FivesFilter. Get Started For Free!
+                      </span>
+                    </p>
+                  </div>
+                  <div className='flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto'>
+                    <div
+                      onClick={() => subscribe()}
+                      className='flex items-center cursor-pointer justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-800 bg-white hover:bg-blue-100'
+                    >
+                      Add Payment Method To Get Started!
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* <!--
         Mobile menu, toggle classes based on menu state.
@@ -305,28 +420,42 @@ export const HomePage = () => {
                       <div className='flex flex-col sm:flex-row xl:flex-col'>
                         <h3 className='text-lg text-center mb-2'>Request Feedback</h3>
                         <hr className='border border-gray-600' />
-                        <div className='mt-3 ml-2 sm:ml-0'>
-                          <label className='text-sm'>Customer Phone</label>
-                          <input
-                            type='text'
-                            placeholder='+15558982222'
-                            className='inline-flex items-center justify-center px-4 py-2 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 xl:w-full'
-                          />
-                        </div>
-                        <div className='mt-3 ml-2 sm:ml-0'>
-                          <label className='text-sm'>Customer Name</label>
-                          <input
-                            type='text'
-                            placeholder='Johnathan Doe'
-                            className='inline-flex items-center justify-center px-4 py-2 pr-5 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 sm:mt-0 xl:mt-0 xl:w-full'
-                          />
-                        </div>
-                        <button
-                          type='button'
-                          className='mt-3 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 xl:mt-3 xl:w-full'
-                        >
-                          Send Feedback Request
-                        </button>
+                        {subscriptions?.length !== 0 && (
+                          <>
+                            <div className='mt-3 ml-2 sm:ml-0'>
+                              <label className='text-sm'>Customer Phone</label>
+                              <input
+                                type='text'
+                                placeholder='+15558982222'
+                                className='inline-flex items-center justify-center px-4 py-2 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 xl:w-full'
+                              />
+                            </div>
+                            <div className='mt-3 ml-2 sm:ml-0'>
+                              <label className='text-sm'>Customer Name</label>
+                              <input
+                                type='text'
+                                placeholder='Johnathan Doe'
+                                className='inline-flex items-center justify-center px-4 py-2 pr-5 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 sm:mt-0 xl:mt-0 xl:w-full'
+                              />
+                            </div>
+                            <button
+                              onClick={() => {}}
+                              type='button'
+                              className='mt-3 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 xl:mt-3 xl:w-full'
+                            >
+                              Send Feedback Request
+                            </button>
+                          </>
+                        )}
+                        {subscriptions?.length === 0 && (
+                          <button
+                            onClick={() => subscribe()}
+                            type='button'
+                            className='mt-3 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 xl:mt-3 xl:w-full'
+                          >
+                            Subscribe To Start Getting Feedback
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -338,13 +467,20 @@ export const HomePage = () => {
             <div className='bg-white lg:min-w-0 lg:flex-1 overflow-scroll h-full'>
               <div className='pl-4 pr-6 pt-4 pb-4 border-b border-t border-gray-200 sm:pl-6 lg:pl-8 xl:pl-6 xl:pt-6 xl:border-t-0'>
                 <div className='flex items-center'>
-                  <h2 className='flex-1 text-lg font-medium'>Recent Feedback Requests</h2>
+                  <h2 className='flex-1 text-lg font-medium'>
+                    Recent Feedback Requests <span className='text-gray-400'>(Example Data)</span>
+                  </h2>
                 </div>
               </div>
               <ul className='relative z-0 divide-y divide-gray-200 border-b border-gray-200'>
-                {feedbackRequests?.map((request: any, index: number) => (
-                  <MainListItem feedbackRequest={request} key={index} />
-                ))}
+                {subscriptions?.length === 0 &&
+                  demoFeedbackRequests?.map((request: any, index: number) => (
+                    <MainListItem feedbackRequest={request} key={index} />
+                  ))}
+                {subscriptions?.length > 0 &&
+                  feedbackRequests?.map((request: any, index: number) => (
+                    <MainListItem feedbackRequest={request} key={index} />
+                  ))}
               </ul>
             </div>
           </div>
@@ -352,7 +488,9 @@ export const HomePage = () => {
           <div className='bg-gray-50 pr-4 sm:pr-6 lg:pr-8 lg:flex-shrink-0 lg:border-l lg:border-gray-200 xl:pr-0'>
             <div className='pl-6 lg:w-80'>
               <div className='pt-6 pb-2'>
-                <h2 className='text-sm font-semibold'>analytics Feed</h2>
+                <h2 className='text-sm font-semibold'>
+                  Events Feed <span className='text-gray-400'>(Example Data)</span>
+                </h2>
               </div>
               <div>
                 <ul className='divide-y divide-gray-200'>
@@ -363,9 +501,7 @@ export const HomePage = () => {
                           <h3 className='text-sm font-medium'>Review Link Clicked</h3>
                           <p className='text-sm text-gray-500'>{new Date().toLocaleDateString()}</p>
                         </div>
-                        <p className='text-sm text-gray-500'>
-                          Ted Gacy Clicked The Online Review Link
-                        </p>
+                        <p className='text-sm text-gray-500'>Ted Gacy Clicked Your Review Link</p>
                       </div>
                     </div>
                   </li>{' '}
@@ -387,7 +523,7 @@ export const HomePage = () => {
                     to={analyticsRoute}
                     className='text-blue-600 font-semibold hover:text-blue-900'
                   >
-                    View analytics Stats <span aria-hidden='true'>&rarr;</span>
+                    View Analytics <span aria-hidden='true'>&rarr;</span>
                   </Link>
                 </div>
               </div>
