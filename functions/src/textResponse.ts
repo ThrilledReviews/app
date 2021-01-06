@@ -16,7 +16,7 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   const userDoc = (
     await firestore.collection('users').where('phoneNumber', '==', to).limit(1).get()
   ).docs[0];
-  const reviewUrl = userDoc.get('reviewUrl');
+
   const fiveStarResponse = userDoc.get('fiveStarResponse');
   const oneToFourStarResponse = userDoc.get('oneToFourStarResponse');
   const invalidInputResponse = userDoc.get('invalidInputResponse');

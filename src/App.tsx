@@ -36,7 +36,7 @@ export const App = () => {
       <Switch>
         <Route path={registerRoute} component={RegistrationPage} />
         <Route path={loginRoute} component={LoginPage} />
-        <Route exact path={indexRoute} component={() => <Redirect to={loginRoute} />} />
+        <Route path={indexRoute} component={() => <Redirect to={loginRoute} />} />
       </Switch>
     </BrowserRouter>
   );

@@ -1,9 +1,10 @@
 import firebase from 'firebase/app';
 import { FormEvent, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { homeRoute, onboardingRoute } from '../../constants/routes';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
+import { homeRoute } from '../../constants/routes';
 
-export const OnboardingPage = () => {
+export const OnboardingPage = ({ uid }: { uid: string }) => {
   const history = useHistory();
   const [error, setError] = useState('');
   const [fullName, setFullName] = useState('');
@@ -25,14 +26,13 @@ export const OnboardingPage = () => {
         businessPhoneNumber,
         notificationPhoneNumber,
       })
-      .then(() => history.replace(homeRoute))
+      .then(() => {
+        history.replace(homeRoute);
+      })
       .catch((error) => {
         setError(error.message);
       });
   };
-
-  console.log(error);
-  history.replace(onboardingRoute);
 
   return (
     <div className='max-w-7xl mx-auto p-4 sm:p-6 lg:p-8'>
@@ -149,7 +149,7 @@ export const OnboardingPage = () => {
               <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5'>
                 <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
                   <label className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'>
-                    Your Business's Phone Number
+                    Your Business's Phone Number (Starts with +1)
                   </label>
                   <div className='mt-1 sm:mt-0 sm:col-span-2'>
                     <div className='max-w-lg flex rounded-md shadow-sm'>
@@ -171,7 +171,7 @@ export const OnboardingPage = () => {
                     htmlFor='username'
                     className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
                   >
-                    Your Cell Phone # (We won't spam you!)
+                    Your Cell Phone # (Starts with +1)
                   </label>
                   <div className='mt-1 sm:mt-0 sm:col-span-2'>
                     <div className='max-w-lg flex rounded-md shadow-sm'>
@@ -223,10 +223,7 @@ export const OnboardingPage = () => {
                             <p className='text-gray-500'>
                               I will NEVER promote, sell, or market anything whatsoever with the
                               service.
-                              <br />I will send transactional messages ONLY. Not sure?{' '}
-                              <a className='text-blue-500' href='mailto:fritz@FivesFilter.com'>
-                                Ask us.
-                              </a>
+                              <br />I will send transactional messages ONLY.
                             </p>
                           </div>
                         </div>
@@ -302,6 +299,7 @@ export const OnboardingPage = () => {
               Save
             </button>
           </div>
+          <p className='text-red-500'>{error}</p>
         </div>
       </form>
     </div>

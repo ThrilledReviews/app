@@ -9,7 +9,7 @@ export const AuthedRouter = ({ uid }: { uid: string }) => {
 
   if (loading) return null;
 
-  if (!userDoc) return <OnboardingPage />;
+  if (!userDoc) return <OnboardingPage uid={uid} />;
 
   return (
     <Switch>
