@@ -6,7 +6,7 @@ export const validationError = toi.ValidationError;
 export const isFullName = toi.str.length(6, 25).and(toix.str.trim());
 export const isBusinessName = toi.str.length(6, 40).and(toix.str.trim());
 export const isUsername = toi.str
-  .length(3, 15)
+  .length(3, 20)
   .and(toi.str.regex(/^[a-z0-9_]+$/i))
   .and(toix.str.lowercase())
   .and(toix.str.trim());
