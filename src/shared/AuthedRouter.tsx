@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { OnboardingPage, HomePage } from '../pages';
