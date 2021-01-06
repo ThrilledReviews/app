@@ -16,6 +16,7 @@ interface OnboardData {
   businessAreaCode?: string;
   businessPhoneNumber: string;
   notificationPhoneNumber: string;
+  notificationsEnabled?: boolean;
   alreadyAnsweredResponse?: string;
   invalidInputResponse?: string;
   fiveStarResponse?: string;
@@ -53,6 +54,7 @@ ${data.reviewUrl}
   data.invalidInputResponse = `Our system only understands the numbers 1-5. If you'd like to get in touch with us, please call ${data.businessPhoneNumber}`;
   data.oneToFourStarResponse = `We're sorry to hear that our team didn't meet your expectations. We'll follow up to see what went wrong.`;
   data.outreachMessage = `Thanks for choosing ${data.businessName}! If you don't mind the question, on a scale of 1-5, how did we do?`;
+  data.notificationsEnabled = false;
 
   // check for existing usernames
   const usernameMatch = await admin
