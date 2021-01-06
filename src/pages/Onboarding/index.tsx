@@ -10,12 +10,11 @@ export const OnboardingPage = () => {
   const [username, setUsername] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [reviewUrl, setReviewUrl] = useState('');
-  const [areaCode, setAreaCode] = useState('');
+  const [businessPhoneNumber, setBusinessPhoneNumber] = useState('');
   const [notificationPhoneNumber, setNotificationPhoneNumber] = useState('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(areaCode);
     firebase
       .functions()
       .httpsCallable('onboardUser')({
@@ -23,7 +22,7 @@ export const OnboardingPage = () => {
         username,
         businessName,
         reviewUrl,
-        areaCode,
+        businessPhoneNumber,
         notificationPhoneNumber,
       })
       .then(() => history.replace(homeRoute))
@@ -150,14 +149,14 @@ export const OnboardingPage = () => {
               <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5'>
                 <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
                   <label className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'>
-                    Your Business's Area Code
+                    Your Business's Phone Number
                   </label>
                   <div className='mt-1 sm:mt-0 sm:col-span-2'>
                     <div className='max-w-lg flex rounded-md shadow-sm'>
                       <input
                         required
-                        value={areaCode}
-                        onChange={(e) => setAreaCode(e.target.value)}
+                        value={businessPhoneNumber}
+                        onChange={(e) => setBusinessPhoneNumber(e.target.value)}
                         placeholder='559'
                         type='number'
                         autoComplete='businessUsername'
