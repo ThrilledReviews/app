@@ -157,9 +157,8 @@ export const OnboardingPage = () => {
                         required
                         value={businessPhoneNumber}
                         onChange={(e) => setBusinessPhoneNumber(e.target.value)}
-                        placeholder='559'
-                        type='number'
-                        autoComplete='businessUsername'
+                        placeholder='+15558984234'
+                        type='text'
                         className='flex-1 block w-full focus:ring-blue-500 focus:border-blue-500 min-w-0 rounded-md sm:text-sm border-gray-300'
                       />
                     </div>

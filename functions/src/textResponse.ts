@@ -16,7 +16,7 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   const userDoc = (
     await firestore.collection('users').where('phoneNumber', '==', to).limit(1).get()
   ).docs[0];
-
+  const reviewUrl = userDoc.get('reviewUrl');
   const fiveStarResponse = userDoc.get('fiveStarResponse');
   const oneToFourStarResponse = userDoc.get('oneToFourStarResponse');
   const invalidInputResponse = userDoc.get('invalidInputResponse');
@@ -74,8 +74,9 @@ The customer's phone number is ${feedbackRequestDoc.data().phoneNumber}`,
     }, 10000);
   } else if (response === '5') {
     await feedbackRequestDoc.ref.set({ resultNumber: Number(response) }, { merge: true });
+    twimlResponse.message(`${fiveStarResponse}
 
-    twimlResponse.message(fiveStarResponse);
+https://us-central1-thrill-check.cloudfunctions.net/redirect?b=${userDoc.id}&c=${feedbackRequestDoc.id}`);
 
     setTimeout(() => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });
