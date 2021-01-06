@@ -1,10 +1,9 @@
 import firebase from 'firebase/app';
 import { FormEvent, useState } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
+import { useHistory } from 'react-router-dom';
 import { homeRoute } from '../../constants/routes';
 
-export const OnboardingPage = ({ uid }: { uid: string }) => {
+export const OnboardingPage = () => {
   const history = useHistory();
   const [error, setError] = useState('');
   const [fullName, setFullName] = useState('');
