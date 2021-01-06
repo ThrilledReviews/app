@@ -1,18 +1,15 @@
 import * as functions from 'firebase-functions';
-import { initializeApp } from 'firebase-admin';
-
-const admin = initializeApp();
-const firestore = admin.firestore();
+import { firestore } from 'firebase-admin';
 
 export const handleRedirect = async (req: functions.https.Request, res: functions.Response) => {
-  const userDoc = await firestore
+  const userDoc = await firestore()
     .collection('users')
     .doc(req.query['b'] as string)
     .get();
 
   const userData = userDoc.data();
 
-  await firestore
+  await firestore()
     .collection('users')
     .doc(userDoc.id)
     .collection('feedbackRequests')

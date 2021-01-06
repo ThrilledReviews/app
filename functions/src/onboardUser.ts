@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
+import { firestore } from 'firebase-admin';
 import {
   isBusinessName,
   isElevenDigitPhone,
@@ -23,8 +23,6 @@ interface OnboardData {
   oneToFourStarResponse?: string;
   outreachMessage?: string;
 }
-
-admin.initializeApp();
 
 export const handleOnboardUser = async (
   data: OnboardData,
@@ -54,8 +52,7 @@ Reviews are very important to our business - would you mind leaving us one?`;
   data.notificationsEnabled = false;
 
   // check for existing usernames
-  const usernameMatch = await admin
-    .firestore()
+  const usernameMatch = await firestore()
     .collection('users')
     .where('username', '==', data.username)
     .limit(1)
@@ -64,7 +61,7 @@ Reviews are very important to our business - would you mind leaving us one?`;
   if (usernameMatch.docs.length !== 0)
     return { status: 400, message: 'Username already taken. Pick something else' };
 
-  await admin.firestore().collection('users').doc(context.auth.uid).set(data);
+  await firestore().collection('users').doc(context.auth.uid).set(data);
 
   return { status: 204, message: 'Successfully Onboarded User' };
 };

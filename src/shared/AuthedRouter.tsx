@@ -2,18 +2,19 @@ import firebase from 'firebase/app';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { OnboardingPage, HomePage } from '../pages';
-import { homeRoute, indexRoute } from '../constants/routes';
+import { analyticsRoute, homeRoute, indexRoute } from '../constants/routes';
 
 export const AuthedRouter = ({ uid }: { uid: string }) => {
   const [userDoc, loading] = useDocumentData(firebase.firestore().collection('users').doc(uid));
 
   if (loading) return null;
 
-  if (!userDoc) return <OnboardingPage uid={uid} />;
+  if (!userDoc) return <OnboardingPage />;
 
   return (
     <Switch>
       <Route path={homeRoute} component={HomePage} />
+      <Route path={analyticsRoute} component={() => <div />} />
       <Route path={indexRoute} component={() => <Redirect to={homeRoute} />} />
     </Switch>
   );

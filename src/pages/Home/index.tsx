@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
-import { accountSettingsRoute, activityRoute, homeRoute } from '../../constants/routes';
+import { accountSettingsRoute, analyticsRoute, homeRoute } from '../../constants/routes';
 import { MainListItem } from './MainListItem';
 
 export const HomePage = () => {
@@ -17,13 +17,7 @@ export const HomePage = () => {
     any
   ];
   const [feedbackRequests] = useCollectionData(
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(user?.uid)
-      .collection('feedbackRequests')
-      .orderBy('createdDate', 'desc')
-      .limit(10)
+    firebase.firestore().collection('users').doc(user?.uid).collection('feedbackRequests').limit(10)
   ) as [any, boolean, any];
 
   return (
@@ -132,7 +126,7 @@ export const HomePage = () => {
                 <div className='flex items-center justify-end'>
                   <div className='flex'>
                     <Link
-                      to={activityRoute}
+                      to={analyticsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
                       Analytics
@@ -234,7 +228,7 @@ export const HomePage = () => {
                 Dashboard
               </Link>
               <Link
-                to={activityRoute}
+                to={analyticsRoute}
                 className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 bg-blue-600'
               >
                 Analytics
@@ -351,40 +345,14 @@ export const HomePage = () => {
                 {feedbackRequests?.map((request: any, index: number) => (
                   <MainListItem feedbackRequest={request} key={index} />
                 ))}
-                <MainListItem
-                  feedbackRequest={{
-                    customerName: 'Ted Gacy',
-                    phoneNumber: '+15599088424',
-                    resultNumber: -1,
-                    reviewLinkClicked: false,
-                  }}
-                />
-
-                <MainListItem
-                  feedbackRequest={{
-                    customerName: 'Samuel Colt',
-                    phoneNumber: '+15599088424',
-                    resultNumber: 3,
-                    reviewLinkClicked: false,
-                  }}
-                />
-                <MainListItem
-                  feedbackRequest={{
-                    customerName: 'James Winchester',
-                    phoneNumber: '+15599088424',
-                    resultNumber: 5,
-                    reviewLinkClicked: true,
-                  }}
-                />
-                {/* <!-- More items... --> */}
               </ul>
             </div>
           </div>
-          {/* <!-- Activity feed --> */}
+          {/* <!-- analytics feed --> */}
           <div className='bg-gray-50 pr-4 sm:pr-6 lg:pr-8 lg:flex-shrink-0 lg:border-l lg:border-gray-200 xl:pr-0'>
             <div className='pl-6 lg:w-80'>
               <div className='pt-6 pb-2'>
-                <h2 className='text-sm font-semibold'>Activity Feed</h2>
+                <h2 className='text-sm font-semibold'>analytics Feed</h2>
               </div>
               <div>
                 <ul className='divide-y divide-gray-200'>
@@ -416,10 +384,10 @@ export const HomePage = () => {
                 </ul>
                 <div className='py-4 text-sm border-t border-gray-200'>
                   <Link
-                    to={activityRoute}
+                    to={analyticsRoute}
                     className='text-blue-600 font-semibold hover:text-blue-900'
                   >
-                    View Activity Stats <span aria-hidden='true'>&rarr;</span>
+                    View analytics Stats <span aria-hidden='true'>&rarr;</span>
                   </Link>
                 </div>
               </div>

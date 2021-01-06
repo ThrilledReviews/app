@@ -1,9 +1,6 @@
-import { initializeApp } from 'firebase-admin';
 import { https, Response, config } from 'firebase-functions';
+import { firestore } from 'firebase-admin';
 import { Twilio, twiml } from 'twilio';
-
-const admin = initializeApp();
-const firestore = admin.firestore();
 
 export const handleTextResponse = async (req: https.Request, res: Response) => {
   res.set('Access-Control-Allow-Origin', '*');
@@ -14,7 +11,7 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   const twimlResponse = new twiml.MessagingResponse();
 
   const userDoc = (
-    await firestore.collection('users').where('phoneNumber', '==', to).limit(1).get()
+    await firestore().collection('users').where('phoneNumber', '==', to).limit(1).get()
   ).docs[0];
 
   const fiveStarResponse = userDoc.get('fiveStarResponse');
@@ -26,7 +23,7 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   const phoneNumber = userDoc.get('phoneNumber');
 
   const feedbackRequestDoc = (
-    await firestore
+    await firestore()
       .collection('users')
       .doc(userDoc.id)
       .collection('feedbackRequests')
