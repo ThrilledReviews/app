@@ -5,9 +5,10 @@ import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firesto
 import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import { Stripe } from '@stripe/stripe-js';
+import { useStripe } from '@stripe/react-stripe-js';
 import { accountSettingsRoute, analyticsRoute, homeRoute } from '../../constants/routes';
 import { MainListItem, FeedbackRequest } from './MainListItem';
-import { useStripe } from '@stripe/react-stripe-js';
+import { AppEvent, EventListItem } from './EventListItem';
 
 export const HomePage = () => {
   const stripe = useStripe() as Stripe;
@@ -24,7 +25,13 @@ export const HomePage = () => {
   ];
 
   const [feedbackRequests] = useCollectionData(
-    firebase.firestore().collection('users').doc(user?.uid).collection('feedbackRequests').limit(10)
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .collection('feedbackRequests')
+      .orderBy('createdDate', 'desc')
+      .limit(10)
   ) as [any, boolean, any];
 
   const [subscriptionData] = useCollectionData(
@@ -36,38 +43,77 @@ export const HomePage = () => {
       .where('status', '==', 'active')
   );
 
+  const demoEvents: AppEvent[] = [
+    {
+      event: 'review_link_clicked',
+      eventName: 'Review Link Clicked',
+      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+      message: 'Joey Valentino Clicked a Review Link!',
+    },
+    {
+      event: 'five_star_review',
+      eventName: 'Five Star Review',
+      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+      message: 'Joey Valentino Left a Five-Star Review!',
+    },
+    {
+      event: 'three_star_review',
+      eventName: 'Three Star Review',
+      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+      message: 'Quinn Romanov Left a Three-Star Review.',
+    },
+    {
+      event: 'five_star_review',
+      eventName: 'Five Star Review',
+      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+      message: 'Morpheus Fishburne Left a Five-Star Review!',
+    },
+    {
+      event: 'review_link_clicked',
+      eventName: 'Review Link Clicked',
+      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+      message: 'Neo Reeves Clicked a Review Link!',
+    },
+    {
+      event: 'five_star_review',
+      eventName: 'Five Star Review',
+      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
+      message: 'Neo Reeves Left a Five-Star Review!',
+    },
+  ];
+
   const demoFeedbackRequests: FeedbackRequest[] = [
     {
       customerName: 'Joey Valentino',
-      phoneNumber: '+15558859234',
+      customerPhone: '+15558859234',
       reviewLinkClicked: true,
       resultNumber: 5,
       createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
     },
     {
       customerName: 'Quinn Romanov',
-      phoneNumber: '+15552359234',
+      customerPhone: '+15552359234',
       reviewLinkClicked: false,
       resultNumber: 3,
       createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
     },
     {
       customerName: 'Janet Koch',
-      phoneNumber: '+15555232234',
+      customerPhone: '+15555232234',
       reviewLinkClicked: false,
       resultNumber: -1,
       createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
     },
     {
       customerName: 'Morpheus Fishburne',
-      phoneNumber: '+15558859234',
+      customerPhone: '+15558859234',
       reviewLinkClicked: false,
       resultNumber: 5,
       createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
     },
     {
       customerName: 'Neo Reeves',
-      phoneNumber: '+15228859234',
+      customerPhone: '+15228859234',
       reviewLinkClicked: false,
       resultNumber: 5,
       createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
@@ -76,6 +122,8 @@ export const HomePage = () => {
 
   const handleRequestFeedback = () => {
     firebase.functions().httpsCallable('requestFeedback')({ customerName, customerPhone });
+    setCustomerName('');
+    setCustomerPhone('');
   };
 
   const handleCheckout = async () => {
@@ -506,35 +554,15 @@ export const HomePage = () => {
             <div className='pl-6 lg:w-80'>
               <div className='pt-6 pb-2'>
                 <h2 className='text-sm font-semibold'>
-                  Events Feed{' '}
+                  Events{' '}
                   {!subscriptionData?.[0] && <span className='text-gray-400'>(Example Data)</span>}
                 </h2>
               </div>
               <div>
                 <ul className='divide-y divide-gray-200'>
-                  <li className='py-4'>
-                    <div className='flex space-x-3'>
-                      <div className='flex-1 space-y-1'>
-                        <div className='flex items-center justify-between'>
-                          <h3 className='text-sm font-medium'>Review Link Clicked</h3>
-                          <p className='text-sm text-gray-500'>{new Date().toLocaleDateString()}</p>
-                        </div>
-                        <p className='text-sm text-gray-500'>Ted Gacy Clicked Your Review Link</p>
-                      </div>
-                    </div>
-                  </li>{' '}
-                  <li className='py-4'>
-                    <div className='flex space-x-3'>
-                      <div className='flex-1 space-y-1'>
-                        <div className='flex items-center justify-between'>
-                          <h3 className='text-sm font-medium'>5 Star Review</h3>
-                          <p className='text-sm text-gray-500'>{new Date().toLocaleDateString()}</p>
-                        </div>
-                        <p className='text-sm text-gray-500'>Ted Gacy Gave You Five Stars</p>
-                      </div>
-                    </div>
-                  </li>
-                  {/* <!-- More items... --> */}
+                  {subscriptionData?.[0] && null}
+                  {subscriptionData?.[0] &&
+                    demoEvents.map((event, index) => <EventListItem event={event} key={index} />)}
                 </ul>
                 <div className='py-4 text-sm border-t border-gray-200'>
                   <Link

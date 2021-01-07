@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 
 export interface FeedbackRequest {
   customerName: string;
-  phoneNumber: string;
+  customerPhone: string;
   resultNumber: number;
   reviewLinkClicked: boolean;
   createdDate?: firebase.firestore.Timestamp;
@@ -24,7 +24,7 @@ export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackReq
           </div>
           <div className='relative group flex items-center space-x-2.5'>
             <span className='text-sm text-gray-500 font-medium truncate'>
-              {feedbackRequest.phoneNumber}
+              {feedbackRequest.customerPhone}
             </span>
           </div>
         </div>

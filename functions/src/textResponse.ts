@@ -46,6 +46,36 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   }
 
   if (response === '1' || response === '2' || response === '3' || response === '4') {
+    let event;
+    let eventName;
+    if (response === '1') {
+      event = 'one_star_review';
+      eventName = 'One Star Review';
+    }
+    if (response === '2') {
+      event = 'two_star_review';
+      eventName = 'Two Star Review';
+    }
+    if (response === '3') {
+      event = 'three_star_review';
+      eventName = 'Three Star Review';
+    }
+    if (response === '4') {
+      event = 'four_star_review';
+      eventName = 'Four Star Review';
+    }
+    await firestore()
+      .collection('users')
+      .doc(userDoc.id)
+      .collection('events')
+      .add({
+        createdDate: new Date(),
+        event,
+        eventName,
+        message: `${feedbackRequestDoc.data().customerName} just left a ${response} star review`,
+        customerPhone: feedbackRequestDoc.data().customerPhone,
+        customerName: feedbackRequestDoc.data().customerName,
+      });
     if (notificationsEnabled) {
       const client = new Twilio(config().twilio.sid, config().twilio.token);
       await client.messages.create({
@@ -69,6 +99,18 @@ The customer's phone number is ${feedbackRequestDoc.data().customerPhone}`,
       res.end(twimlResponse.toString());
     }, 10000);
   } else if (response === '5') {
+    await firestore()
+      .collection('users')
+      .doc(userDoc.id)
+      .collection('events')
+      .add({
+        createdDate: new Date(),
+        event: 'five_star_review',
+        eventName: 'Five Star Review',
+        message: `${feedbackRequestDoc.data().customerName} just left a ${response} star review`,
+        customerPhone: feedbackRequestDoc.data().customerPhone,
+        customerName: feedbackRequestDoc.data().customerName,
+      });
     await feedbackRequestDoc.ref.set({ resultNumber: Number(response) }, { merge: true });
     twimlResponse.message(`${fiveStarResponse}
 
