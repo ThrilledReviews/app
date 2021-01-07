@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
-import { firestore } from 'firebase-admin';
+import { auth, firestore } from 'firebase-admin';
+
 import {
   isBusinessName,
   isElevenDigitPhone,
@@ -13,6 +14,8 @@ interface OnboardData {
   username: string;
   businessName: string;
   reviewUrl: string;
+  email?: string;
+  customerId?: string;
   businessAreaCode?: string;
   businessPhoneNumber: string;
   notificationPhoneNumber: string;
@@ -50,6 +53,7 @@ Reviews are very important to our business - would you mind leaving us one?`;
   data.oneToFourStarResponse = `We're sorry to hear that our team didn't meet your expectations. We'll follow up to see what went wrong.`;
   data.outreachMessage = `Thanks for choosing ${data.businessName}! If you don't mind the question, on a scale of 1-5, how did we do?`;
   data.notificationsEnabled = false;
+  data.email = (await auth().getUser(context.auth.uid)).email;
 
   // check for existing usernames
   const usernameMatch = await firestore()

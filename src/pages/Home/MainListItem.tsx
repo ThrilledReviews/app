@@ -13,7 +13,7 @@ export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackReq
     <li className='relative pl-4 pr-6 py-5 hover:bg-gray-50 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-6'>
       <div className='flex items-center justify-between space-x-4'>
         {/* <!-- Repo name and link --> */}
-        <div className='min-w-0 space-y-3'>
+        <div className='min-w-0'>
           <div className='flex items-center space-x-3'>
             <span className='block'>
               <h2 className='text-sm font-medium'>

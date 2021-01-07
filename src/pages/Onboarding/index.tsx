@@ -57,7 +57,7 @@ export const OnboardingPage = () => {
                   htmlFor='fullName'
                   className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
                 >
-                  Your First & Last Name
+                  Your Legal First & Last Name
                 </label>
                 <div className='mt-1 sm:mt-0 sm:col-span-2'>
                   <div className='max-w-lg flex rounded-md shadow-sm'>

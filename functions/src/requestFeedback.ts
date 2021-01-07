@@ -21,14 +21,18 @@ export const handleRequestFeedback = async (
 
   const to = data.customerPhone;
   const body = userDoc.data()?.outreachMessage;
-  const from = userDoc.data()?.appPhone;
+  let from = userDoc.data()?.appPhone;
+
+  if (!from) {
+    const { phoneNumber } = await twilio.incomingPhoneNumbers.create({
+      areaCode: userDoc.get('businessAreaCode'),
+      smsUrl: 'https://us-central1-thrill-check.cloudfunctions.net/textResponse',
+    });
+    await userDoc.ref.set({ appPhone: phoneNumber }, { merge: true });
+    from = phoneNumber;
+  }
 
   const feedbackRequest = { ...data, createdDate: new Date(), resultNumber: -1 };
-  const event = {
-    message: `You sent ${data.customerName} a feedback request`,
-    eventType: 'feedback_requested',
-    eventDate: new Date(),
-  };
 
   await twilio.messages.create({ to, body, from });
   await firestore()
@@ -36,5 +40,4 @@ export const handleRequestFeedback = async (
     .doc(context.auth?.uid)
     .collection('feedbackRequests')
     .add(feedbackRequest);
-  await firestore().collection('users').doc(context.auth?.uid).collection('events').add(event);
 };

@@ -10,24 +10,23 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
 
   const twimlResponse = new twiml.MessagingResponse();
 
-  const userDoc = (
-    await firestore().collection('users').where('phoneNumber', '==', to).limit(1).get()
-  ).docs[0];
+  const userDoc = (await firestore().collection('users').where('appPhone', '==', to).limit(1).get())
+    .docs[0];
 
-  const fiveStarResponse = userDoc.get('fiveStarResponse');
-  const oneToFourStarResponse = userDoc.get('oneToFourStarResponse');
-  const invalidInputResponse = userDoc.get('invalidInputResponse');
-  const alreadyAnsweredResponse = userDoc.get('alreadyAnsweredResponse');
-  const notificationPhoneNumber = userDoc.get('notificationPhoneNumber');
+  const fiveStarResponse: string = userDoc.get('fiveStarResponse');
+  const oneToFourStarResponse: string = userDoc.get('oneToFourStarResponse');
+  const invalidInputResponse: string = userDoc.get('invalidInputResponse');
+  const alreadyAnsweredResponse: string = userDoc.get('alreadyAnsweredResponse');
+  const notificationPhoneNumber: string = userDoc.get('notificationPhoneNumber');
   const notificationsEnabled: boolean = userDoc.get('notificationsEnabled');
-  const phoneNumber = userDoc.get('phoneNumber');
+  const appPhone: string = userDoc.get('appPhone');
 
   const feedbackRequestDoc = (
     await firestore()
       .collection('users')
       .doc(userDoc.id)
       .collection('feedbackRequests')
-      .where('phoneNumber', '==', from)
+      .where('customerPhone', '==', from)
       .orderBy('createdDate', 'desc')
       .limit(1)
       .get()
@@ -51,9 +50,9 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
       const client = new Twilio(config().twilio.sid, config().twilio.token);
       await client.messages.create({
         to: notificationPhoneNumber,
-        from: phoneNumber,
+        from: appPhone,
         body: `${response} Star Feedback Recieved from ${feedbackRequestDoc.data().customerName}
-The customer's phone number is ${feedbackRequestDoc.data().phoneNumber}`,
+The customer's phone number is ${feedbackRequestDoc.data().customerPhone}`,
       });
     }
     await feedbackRequestDoc.ref.set(
