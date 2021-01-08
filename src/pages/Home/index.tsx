@@ -272,12 +272,12 @@ export const HomePage = () => {
                     >
                       Dashboard
                     </Link>
-                    <Link
+                    {/* <Link
                       to={analyticsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
                       Analytics
-                    </Link>
+                    </Link> */}
                     <a
                       href={`mailto:fritz@workhorsesw.com?subject=${encodeURIComponent(
                         'FivesFilter Support Request for Account ' + user?.uid
@@ -414,12 +414,12 @@ export const HomePage = () => {
               >
                 Dashboard
               </Link>
-              <Link
+              {/* <Link
                 to={analyticsRoute}
                 className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 bg-blue-600'
               >
                 Analytics
-              </Link>
+              </Link> */}
               <a
                 href='mailto:fritz@workhorsesw.com'
                 target='_blank'
@@ -586,12 +586,12 @@ export const HomePage = () => {
                     demoEvents.map((event, index) => <EventListItem event={event} key={index} />)}
                 </ul>
                 <div className='py-4 text-sm border-t border-gray-200'>
-                  <Link
+                  {/* <Link
                     to={analyticsRoute}
                     className='text-blue-600 font-semibold hover:text-blue-900'
                   >
                     View Analytics <span aria-hidden='true'>&rarr;</span>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>

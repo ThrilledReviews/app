@@ -31,7 +31,7 @@ export const RegistrationPage = () => {
             <p className='mt-2 text-sm text-gray-600 max-w'>
               Or{' '}
               <Link to={loginRoute} className='font-medium text-blue-600 hover:text-blue-500'>
-                Sign Into Your Account {'>'}
+                Log Into Your Account {'>'}
               </Link>
             </p>
           </div>
@@ -40,7 +40,7 @@ export const RegistrationPage = () => {
             <form onSubmit={(e) => handleSubmit(e)} className='space-y-6'>
               <div>
                 <label htmlFor='email' className='block text-sm font-medium text-gray-700'>
-                  Email address
+                  Enter Your Email address
                 </label>
                 <div className='mt-1'>
                   <input
@@ -58,7 +58,7 @@ export const RegistrationPage = () => {
 
               <div className='space-y-1'>
                 <label htmlFor='password' className='block text-sm font-medium text-gray-700'>
-                  Password
+                  Choose A Password
                 </label>
                 <div className='mt-1'>
                   <input
@@ -73,18 +73,6 @@ export const RegistrationPage = () => {
                   />
                 </div>
               </div>
-
-              <div className='flex items-center justify-end'>
-                <div className='text-sm'>
-                  <Link
-                    to='/forgot-password'
-                    className='font-medium text-blue-600 hover:text-blue-500'
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-              </div>
-
               <div>
                 <button
                   type='submit'
@@ -96,11 +84,17 @@ export const RegistrationPage = () => {
 
               <p className='mt-1 text-center text-sm text-gray-500'>
                 By Signing Up, You Agree To Our{' '}
-                <a href='/terms' className='text-blue-500'>
+                <a
+                  href='https://app.termly.io/document/terms-and-conditions/08ceafcc-cca8-4c63-8783-7abed61b4124'
+                  className='text-blue-500'
+                >
                   Terms of Service
                 </a>{' '}
                 &{' '}
-                <a href='/privacy' className='text-blue-500'>
+                <a
+                  href='https://app.termly.io/document/privacy-policy/47c13b8d-3eb6-4cb0-836a-79f86cd9934b'
+                  className='text-blue-500'
+                >
                   Privacy Policy
                 </a>
               </p>

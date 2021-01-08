@@ -40,7 +40,7 @@ export const handleRedirect = async (req: functions.https.Request, res: function
         createdDate: new Date(),
         event: 'review_link_clicked',
         eventName: 'Review Link Clicked',
-        message: `${feedback.customerName} clicked a review link!`,
+        message: `${feedback.customerName} clicked your review link!`,
         customerPhone: feedback.customerPhone,
         customerName: feedback.customerName,
       });

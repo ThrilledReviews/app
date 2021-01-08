@@ -194,12 +194,12 @@ export const SettingsPage = () => {
                     >
                       Dashboard
                     </Link>
-                    <Link
+                    {/* <Link
                       to={analyticsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
                       Analytics
-                    </Link>
+                    </Link> */}
                     <a
                       href={`mailto:fritz@workhorsesw.com?subject=${encodeURIComponent(
                         'FivesFilter Support Request for Account ' + user?.uid
@@ -336,12 +336,12 @@ export const SettingsPage = () => {
               >
                 Dashboard
               </Link>
-              <Link
+              {/* <Link
                 to={analyticsRoute}
                 className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 bg-blue-600'
               >
                 Analytics
-              </Link>
+              </Link> */}
               <a
                 href='mailto:fritz@workhorsesw.com'
                 target='_blank'
@@ -399,7 +399,7 @@ export const SettingsPage = () => {
                 </label>
                 <div className='mt-1'>
                   <input
-                    placeholder="Mickey's Boxing Gym"
+                    placeholder='https://MickeysGym.com'
                     value={reviewUrl}
                     onChange={(e) => setReviewUrl(e.target.value)}
                     type='text'

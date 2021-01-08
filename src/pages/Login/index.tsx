@@ -27,7 +27,9 @@ export const LoginPage = () => {
       <div className='flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24'>
         <div className='mx-auto w-full max-w-sm lg:w-96'>
           <div>
-            <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>Sign In To FivesFilter</h2>
+            <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
+              Log In To Your FivesFilter Account
+            </h2>
             <p className='mt-2 text-sm text-gray-600 max-w'>
               Or{' '}
               <Link to={registerRoute} className='font-medium text-blue-600 hover:text-blue-500'>
@@ -90,16 +92,22 @@ export const LoginPage = () => {
                   type='submit'
                   className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 >
-                  Sign in
+                  Log In
                 </button>
               </div>
               <p className='mt-1 text-center text-sm text-gray-500'>
                 By Logging In, You're Agreeing To Our{' '}
-                <a href='/terms' className='text-blue-500'>
+                <a
+                  href='https://app.termly.io/document/terms-and-conditions/08ceafcc-cca8-4c63-8783-7abed61b4124'
+                  className='text-blue-500'
+                >
                   Terms of Service
                 </a>{' '}
                 &{' '}
-                <a href='/privacy' className='text-blue-500'>
+                <a
+                  href='https://app.termly.io/document/privacy-policy/47c13b8d-3eb6-4cb0-836a-79f86cd9934b'
+                  className='text-blue-500'
+                >
                   Privacy Policy
                 </a>
               </p>
