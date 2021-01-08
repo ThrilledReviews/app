@@ -6,6 +6,9 @@ import { handleRedirect } from './redirect';
 import { handleTextResponse } from './textResponse';
 import { handleRequestFeedback } from './requestFeedback';
 import { createCheckoutSession } from './createCheckout';
+import { sendTestFeedbackRequest } from './testFeedbackRequest';
+import { handleTestTextResponse } from './testTextResponse';
+import { handleTestRedirect } from './testRedirect';
 
 admin.initializeApp();
 
@@ -16,5 +19,11 @@ export const textResponse = functions.https.onRequest(handleTextResponse);
 export const redirect = functions.https.onRequest(handleRedirect);
 
 export const requestFeedback = functions.https.onCall(handleRequestFeedback);
+
+export const testFeedbackRequest = functions.https.onCall(sendTestFeedbackRequest);
+
+export const testTextResponse = functions.https.onRequest(handleTestTextResponse);
+
+export const testRedirect = functions.https.onRequest(handleTestRedirect);
 
 export const createCheckout = createCheckoutSession;

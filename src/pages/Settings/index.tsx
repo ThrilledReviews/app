@@ -6,7 +6,7 @@ import { useDocumentData, useCollectionData } from 'react-firebase-hooks/firesto
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useStripe } from '@stripe/react-stripe-js';
 import { Stripe } from '@stripe/stripe-js';
-import { homeRoute, analyticsRoute, settingsRoute } from '../../constants/routes';
+import { homeRoute, settingsRoute } from '../../constants/routes';
 
 export const SettingsPage = () => {
   const [profileOpen, setProfileOpen] = useState(false);

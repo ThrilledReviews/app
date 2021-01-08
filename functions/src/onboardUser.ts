@@ -46,11 +46,11 @@ export const handleOnboardUser = async (
 
   data.businessAreaCode = data.businessPhoneNumber.slice(2, 5);
   data.alreadyAnsweredResponse = `We appreciate your review! If you'd like to get in touch with ${data.businessName}, please call ${data.businessPhoneNumber}`;
-  data.fiveStarResponse = `We're glad that we could impress!
-Reviews are very important to our business - would you mind leaving us one?`;
+  data.fiveStarResponse = `We're glad that we impressed you!
+Reviews are very important to our business - would you mind clicking this link and leaving us one?`;
   data.invalidInputResponse = `Our system only understands the numbers 1-5. If you'd like to get in touch with us, please call ${data.businessPhoneNumber}`;
   data.oneToFourStarResponse = `We're sorry to hear that our team didn't meet your expectations. We'll follow up to see what went wrong.`;
-  data.outreachMessage = `Thanks for choosing ${data.businessName}! If you don't mind the question, on a scale of 1-5, how did we do?`;
+  data.outreachMessage = `Thanks for choosing ${data.businessName}! On a scale of 1-5, how did we do? (Reply with only a number, 1-5)`;
   data.email = (await auth().getUser(context.auth.uid)).email;
 
   await firestore().collection('users').doc(context.auth.uid).set(data);

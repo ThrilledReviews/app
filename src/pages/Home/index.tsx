@@ -1,12 +1,12 @@
 import firebase from 'firebase/app';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import { Stripe } from '@stripe/stripe-js';
 import { useStripe } from '@stripe/react-stripe-js';
-import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
+import { homeRoute, settingsRoute } from '../../constants/routes';
 import { MainListItem, FeedbackRequest } from './MainListItem';
 import { AppEvent, EventListItem } from './EventListItem';
 
@@ -15,6 +15,7 @@ export const HomePage = () => {
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [profileOpen, setProfileOpen] = useState(false);
+  const [welcomeModalOpen, setWelcomeModalOpen] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user] = useAuthState(firebase.auth());
 
@@ -23,6 +24,14 @@ export const HomePage = () => {
     any,
     any
   ];
+
+  useEffect(() => {
+    if (userDoc?.sentTestRequest === true) {
+      setWelcomeModalOpen(false);
+    } else {
+      setWelcomeModalOpen(true);
+    }
+  }, [userDoc?.sentTestRequest]);
 
   const [feedbackRequests] = useCollectionData(
     firebase
@@ -43,6 +52,7 @@ export const HomePage = () => {
       .orderBy('createdDate', 'desc')
       .limit(10)
   ) as [any, boolean, any];
+
   const [subscriptionData, loading] = useCollectionData(
     firebase
       .firestore()
@@ -51,6 +61,21 @@ export const HomePage = () => {
       .collection('subscriptions')
       .where('status', '==', 'active')
   );
+
+  const sendTestFeedbackRequest = async () => {
+    setWelcomeModalOpen(false);
+    if (userDoc?.sentTestRequest) return;
+    await firebase.functions().httpsCallable('testFeedbackRequest')({});
+  };
+
+  const dismissWelcomeModal = () => {
+    setWelcomeModalOpen(false);
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .set({ welcomeModalDismissed: true }, { merge: true });
+  };
 
   const demoEvents: AppEvent[] = [
     {
@@ -123,7 +148,7 @@ export const HomePage = () => {
     {
       customerName: 'Neo Reeves',
       customerPhone: '+15228859234',
-      reviewLinkClicked: false,
+      reviewLinkClicked: true,
       resultNumber: 5,
       createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
     },
@@ -552,6 +577,17 @@ export const HomePage = () => {
                 </div>
               </div>
               <ul className='relative z-0 divide-y divide-gray-200 border-b border-gray-200'>
+                {!subscriptionData?.[0] && !loading && userDoc?.testResultNumber && (
+                  <MainListItem
+                    feedbackRequest={{
+                      customerName: userDoc?.fullName,
+                      customerPhone: userDoc?.notificationPhoneNumber,
+                      resultNumber: userDoc?.testResultNumber,
+                      reviewLinkClicked: userDoc?.testRedirectLinkClicked,
+                      createdDate: userDoc?.testRedirectClickedDate,
+                    }}
+                  />
+                )}
                 {!subscriptionData?.[0] &&
                   !loading &&
                   demoFeedbackRequests?.map((request: any, index: number) => (
@@ -581,6 +617,28 @@ export const HomePage = () => {
                     events.map((event: any, index: number) => (
                       <EventListItem event={event} key={index} />
                     ))}
+                  {!subscriptionData?.[0] && userDoc?.testRedirectLinkClicked && !loading && (
+                    <EventListItem
+                      event={{
+                        createdDate: userDoc?.testRedirectClickedDate,
+                        event: 'review_link_clicked',
+                        eventName: 'Review Link Clicked',
+                        message: `${userDoc?.fullName} clicked your review link!`,
+                        customerPhone: `${userDoc?.notificationPhoneNumber}`,
+                      }}
+                    />
+                  )}
+                  {!subscriptionData?.[0] && userDoc?.testReviewEvent && !loading && (
+                    <EventListItem
+                      event={{
+                        createdDate: userDoc?.testReviewEventDate,
+                        event: userDoc?.testReviewEvent,
+                        eventName: userDoc.testReviewEventName,
+                        message: userDoc.testReviewEventMessage,
+                        customerPhone: userDoc?.notificationPhoneNumber,
+                      }}
+                    />
+                  )}
                   {!subscriptionData?.[0] &&
                     !loading &&
                     demoEvents.map((event, index) => <EventListItem event={event} key={index} />)}
@@ -598,6 +656,132 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
+      {welcomeModalOpen && (
+        <>
+          <div className='fixed z-10 inset-0 overflow-y-auto'>
+            <div className='flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
+              {/* <!--
+        Background overlay, show/hide based on modal state.
+  
+        Entering: "ease-out duration-300"
+          From: "opacity-0"
+          To: "opacity-100"
+        Leaving: "ease-in duration-200"
+          From: "opacity-100"
+          To: "opacity-0"
+      --> */}
+              <Transition
+                show={welcomeModalOpen}
+                enter='ease-out duration-300'
+                enterFrom='opacity-0'
+                enterTo='opacity-100'
+                leave='ease-in duration-200'
+                leaveFrom='opacity-100'
+                leaveTo='opacity-0'
+              >
+                <div className='fixed inset-0 transition-opacity' aria-hidden='true'>
+                  <div className='absolute inset-0 bg-gray-500 opacity-75'></div>
+                </div>
+              </Transition>
+
+              {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
+              {/* <span
+                className='hidden sm:inline-block align-middle sm:h-screen'
+                aria-hidden='true'
+              >
+                &#8203;
+              </span> */}
+              {/* <!--
+        Modal panel, show/hide based on modal state.
+  
+        Entering: "ease-out duration-300"
+          From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          To: "opacity-100 translate-y-0 sm:scale-100"
+        Leaving: "ease-in duration-200"
+          From: "opacity-100 translate-y-0 sm:scale-100"
+          To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+      --> */}
+              <Transition
+                show={welcomeModalOpen}
+                enter='ease-out duration-300'
+                enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+                enterTo='opacity-100 translate-y-0 sm:scale-100'
+                leave='ease-in duration-200'
+                leaveFrom='opacity-100 translate-y-0 sm:scale-100'
+                leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+              >
+                <div
+                  className='inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6'
+                  role='dialog'
+                  aria-modal='true'
+                  aria-labelledby='modal-headline'
+                >
+                  <div>
+                    <div className='mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100'>
+                      {/* <!-- Heroicon name: check --> */}
+                      <svg
+                        className='h-6 w-6 text-green-600'
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                        aria-hidden='true'
+                      >
+                        <path
+                          stroke-linecap='round'
+                          stroke-linejoin='round'
+                          stroke-width='2'
+                          d='M5 13l4 4L19 7'
+                        />
+                      </svg>
+                    </div>
+                    <div className='mt-3 text-center sm:mt-5'>
+                      <h3
+                        className='text-lg leading-6 font-medium text-gray-900'
+                        id='modal-headline'
+                      >
+                        Welcome! Here's how to get started:
+                      </h3>
+                      <div className='mt-2'>
+                        <p className='text-sm mb-2 text-gray-500'>
+                          You're currently looking at the demo version of FivesFilter. It's intended
+                          to give you an idea of what FivesFilter does and how it's used.
+                        </p>
+                        <hr />
+                        <p className='text-sm mt-2 text-gray-800'>
+                          Try clicking the button below to send yourself a test feedback request
+                          now! We'll use the cell phone # you entered earlier.
+                        </p>
+                        <p className='text-sm mt-2 text-gray-800'>
+                          You'll see your name & phone number pop up under "Recent Feedback". Once
+                          you've recieved the text, reply to it with only the number 5.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='mt-5 sm:mt-6'>
+                    <button
+                      onClick={() => sendTestFeedbackRequest()}
+                      type='button'
+                      className='inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-xl'
+                    >
+                      Send Me The Test
+                      <br />
+                      Feedback Request!
+                    </button>
+                    <div className='text-center text-xs mt-4'>
+                      Message + Data Rates May Apply -{' '}
+                      <span className='cursor-pointer' onClick={() => dismissWelcomeModal()}>
+                        Skip Onboarding
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Transition>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

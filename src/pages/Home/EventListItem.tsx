@@ -5,7 +5,6 @@ export interface AppEvent {
   event: string;
   eventName: string;
   message: string;
-  customerName?: string;
   customerPhone?: string;
 }
 

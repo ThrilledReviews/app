@@ -182,6 +182,7 @@ export const OnboardingPage = () => {
                     <div className='mt-1 sm:mt-0 sm:col-span-2'>
                       <div className='max-w-lg flex rounded-md shadow-sm'>
                         <input
+                          required
                           value={notificationPhoneNumber}
                           onChange={(e) => setNotificationPhoneNumber(e.target.value)}
                           placeholder='+15559058234'
@@ -209,7 +210,6 @@ export const OnboardingPage = () => {
                 <div className='pt-6 sm:pt-5'>
                   <div role='group' aria-labelledby='label-email'>
                     <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline'>
-                      <div />
                       <div className='mt-4 sm:mt-0 sm:col-span-2'>
                         <div className='max-w-lg space-y-4'>
                           <div className='relative flex items-start'>
@@ -332,7 +332,7 @@ export const OnboardingPage = () => {
 
               {/* <!-- This element is to trick the browser into centering the modal contents. --> */}
               {/* <span
-                className='hidden inline-block align-middle sm:h-screen'
+                className='hidden sm:inline-block align-middle sm:h-screen'
                 aria-hidden='true'
               >
                 &#8203;
