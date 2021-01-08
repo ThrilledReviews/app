@@ -72,7 +72,7 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
         createdDate: new Date(),
         event,
         eventName,
-        message: `${feedbackRequestDoc.data().customerName} just left a ${response} star review`,
+        message: `${feedbackRequestDoc.data().customerName} gave a ${response} star review`,
         customerPhone: feedbackRequestDoc.data().customerPhone,
         customerName: feedbackRequestDoc.data().customerName,
       });
@@ -107,7 +107,7 @@ The customer's phone number is ${feedbackRequestDoc.data().customerPhone}`,
         createdDate: new Date(),
         event: 'five_star_review',
         eventName: 'Five Star Review',
-        message: `${feedbackRequestDoc.data().customerName} just left a ${response} star review`,
+        message: `${feedbackRequestDoc.data().customerName} gave a ${response} star review`,
         customerPhone: feedbackRequestDoc.data().customerPhone,
         customerName: feedbackRequestDoc.data().customerName,
       });

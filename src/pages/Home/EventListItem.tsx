@@ -12,12 +12,17 @@ export interface AppEvent {
 export const EventListItem = ({ event }: { event: AppEvent }) => (
   <li className='py-4'>
     <div className='flex space-x-3'>
-      <div className='flex-1 space-y-1'>
+      <div className='flex-1 flex flex-col space-y-1 justify-between'>
         <div className='flex items-center justify-between'>
           <h3
             className={`text-sm font-medium ${
-              (event.event === 'five_star_review' || event.event === 'review_link_clicked') &&
-              'text-blue-400'
+              (event.event === 'one_star_review' ||
+                event.event === 'two_star_review' ||
+                event.event === 'three_star_review' ||
+                event.event === 'four_star_review') &&
+              'text-red-500'
+            } ${event.event === 'five_star_review' && 'text-blue-500'} ${
+              event.event === 'review_link_clicked' && 'text-green-500'
             }`}
           >
             {event.eventName}
@@ -25,7 +30,17 @@ export const EventListItem = ({ event }: { event: AppEvent }) => (
           <p className='text-sm text-gray-500'>{event.createdDate.toDate().toLocaleString()}</p>
         </div>
         <p className='text-sm text-gray-500'>{event.message}</p>
-        <p className='text-sm text-blue-500'>{event.customerPhone && event.customerPhone}</p>
+        {(event.event === 'one_star_review' ||
+          event.event === 'two_star_review' ||
+          event.event === 'three_star_review' ||
+          event.event === 'four_star_review') && (
+          <a
+            href={`tel:${event.customerPhone}`}
+            className='block text-center sm:hidden p-2 rounded bg-blue-500 text-white'
+          >
+            Click to Call {event.customerPhone}
+          </a>
+        )}
       </div>
     </div>
   </li>

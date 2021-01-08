@@ -4,29 +4,25 @@ import { useHistory } from 'react-router-dom';
 import { homeRoute } from '../../constants/routes';
 
 export const OnboardingPage = () => {
-  const history = useHistory();
   const [error, setError] = useState('');
   const [fullName, setFullName] = useState('');
-  const [username, setUsername] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [reviewUrl, setReviewUrl] = useState('');
   const [businessPhoneNumber, setBusinessPhoneNumber] = useState('');
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [notificationPhoneNumber, setNotificationPhoneNumber] = useState('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    firebase
+    await firebase
       .functions()
       .httpsCallable('onboardUser')({
         fullName,
-        username,
         businessName,
         reviewUrl,
         businessPhoneNumber,
         notificationPhoneNumber,
-      })
-      .then(() => {
-        history.replace(homeRoute);
+        notificationsEnabled,
       })
       .catch((error) => {
         setError(error.message);
@@ -96,26 +92,6 @@ export const OnboardingPage = () => {
             </div>
             <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5'>
               <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
-                <label className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'>
-                  Business Username (Letters, Numbers and Underscores)
-                </label>
-                <div className='mt-1 sm:mt-0 sm:col-span-2'>
-                  <div className='max-w-lg flex rounded-md shadow-sm'>
-                    <input
-                      required
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder='abc_plumbing'
-                      type='text'
-                      autoComplete='businessUsername'
-                      className='flex-1 block w-full focus:ring-blue-500 focus:border-blue-500 min-w-0 rounded-md sm:text-sm border-gray-300'
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5'>
-              <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
                 <label
                   htmlFor='reviewUrl'
                   className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
@@ -164,13 +140,31 @@ export const OnboardingPage = () => {
                   </div>
                 </div>
               </div>
-              <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5'>
+              <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5 sm:border-t sm:border-gray-200 sm:pt-5'>
+                <div>
+                  <div className='mt-1 inline'>
+                    <input
+                      checked={notificationsEnabled}
+                      onChange={(e) => setNotificationsEnabled(e.target.checked)}
+                      type='checkbox'
+                      name='notificationsEnabled'
+                      id='notificationsEnabled'
+                      className='text-center mr-3 w-6 h-6 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-black rounded-md'
+                    />
+                  </div>
+                  <label
+                    htmlFor='notificationsEnabled'
+                    className='inline text-sm font-medium text-gray-700'
+                  >
+                    Notify me if I get a 1-4 star response
+                  </label>
+                </div>
                 <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
                   <label
-                    htmlFor='username'
+                    htmlFor='notificationPhoneNumber'
                     className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
                   >
-                    Your Cell Phone # (Starts with +1)
+                    Your Cell Phone # (For Optional Notifications - starts with +1)
                   </label>
                   <div className='mt-1 sm:mt-0 sm:col-span-2'>
                     <div className='max-w-lg flex rounded-md shadow-sm'>
@@ -286,16 +280,10 @@ export const OnboardingPage = () => {
         <div className='pt-5'>
           <div className='flex justify-end'>
             <button
-              type='button'
-              className='bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-            >
-              Cancel
-            </button>
-            <button
               type='submit'
               className='ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
             >
-              Save
+              Get Started
             </button>
           </div>
           <p className='text-red-500'>{error}</p>

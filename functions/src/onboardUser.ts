@@ -6,12 +6,11 @@ import {
   isElevenDigitPhone,
   isFullName,
   isUrl,
-  isUsername,
+  isBoolean,
 } from './utils/validation';
 
 interface OnboardData {
   fullName: string;
-  username: string;
   businessName: string;
   reviewUrl: string;
   email?: string;
@@ -36,10 +35,10 @@ export const handleOnboardUser = async (
   // input validation
   try {
     isFullName(data.fullName);
-    isUsername(data.username);
     isBusinessName(data.businessName);
     isElevenDigitPhone(data.businessPhoneNumber);
     isElevenDigitPhone(data.notificationPhoneNumber);
+    isBoolean(data.notificationsEnabled);
     isUrl(data.reviewUrl);
   } catch (error) {
     return { status: 400, message: error.message };
@@ -52,18 +51,7 @@ Reviews are very important to our business - would you mind leaving us one?`;
   data.invalidInputResponse = `Our system only understands the numbers 1-5. If you'd like to get in touch with us, please call ${data.businessPhoneNumber}`;
   data.oneToFourStarResponse = `We're sorry to hear that our team didn't meet your expectations. We'll follow up to see what went wrong.`;
   data.outreachMessage = `Thanks for choosing ${data.businessName}! If you don't mind the question, on a scale of 1-5, how did we do?`;
-  data.notificationsEnabled = false;
   data.email = (await auth().getUser(context.auth.uid)).email;
-
-  // check for existing usernames
-  const usernameMatch = await firestore()
-    .collection('users')
-    .where('username', '==', data.username)
-    .limit(1)
-    .get();
-
-  if (usernameMatch.docs.length !== 0)
-    return { status: 400, message: 'Username already taken. Pick something else' };
 
   await firestore().collection('users').doc(context.auth.uid).set(data);
 

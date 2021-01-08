@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import { Stripe } from '@stripe/stripe-js';
 import { useStripe } from '@stripe/react-stripe-js';
-import { accountSettingsRoute, analyticsRoute, homeRoute } from '../../constants/routes';
+import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
 import { MainListItem, FeedbackRequest } from './MainListItem';
 import { AppEvent, EventListItem } from './EventListItem';
 
@@ -34,7 +34,16 @@ export const HomePage = () => {
       .limit(10)
   ) as [any, boolean, any];
 
-  const [subscriptionData] = useCollectionData(
+  const [events] = useCollectionData(
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .collection('events')
+      .orderBy('createdDate', 'desc')
+      .limit(10)
+  ) as [any, boolean, any];
+  const [subscriptionData, loading] = useCollectionData(
     firebase
       .firestore()
       .collection('users')
@@ -133,8 +142,7 @@ export const HomePage = () => {
       .doc(user?.uid)
       .collection('checkouts')
       .add({
-        quantity: 0,
-        price: 'price_1I6pL4LjqDOPvfebwGmVyIIi',
+        price: 'price_1I74djLjqDOPvfebNXHhHBPH',
         success_url: window.location.origin,
         cancel_url: window.location.origin,
       });
@@ -259,6 +267,12 @@ export const HomePage = () => {
                 <div className='flex items-center justify-end'>
                   <div className='flex'>
                     <Link
+                      to={homeRoute}
+                      className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
                       to={analyticsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
@@ -328,7 +342,7 @@ export const HomePage = () => {
                         aria-labelledby='user-menu'
                       >
                         <Link
-                          to={accountSettingsRoute}
+                          to={settingsRoute}
                           className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                           role='menuitem'
                         >
@@ -348,7 +362,7 @@ export const HomePage = () => {
               </div>
             </div>
           </div>
-          {!subscriptionData?.[0] && (
+          {!subscriptionData?.[0] && !loading && (
             <div className='bg-blue-800'>
               <div className='max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8'>
                 <div className='flex items-center justify-between flex-wrap'>
@@ -418,7 +432,7 @@ export const HomePage = () => {
             <div className='pt-4 pb-3 border-t border-blue-800'>
               <div className='px-2'>
                 <Link
-                  to={accountSettingsRoute}
+                  to={settingsRoute}
                   className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 hover:bg-blue-600'
                 >
                   Account Settings{' '}
@@ -509,7 +523,7 @@ export const HomePage = () => {
                             </button>
                           </>
                         )}
-                        {!subscriptionData?.[0] && (
+                        {!subscriptionData?.[0] && !loading && (
                           <button
                             onClick={() => handleCheckout()}
                             type='button'
@@ -531,7 +545,7 @@ export const HomePage = () => {
                 <div className='flex items-center'>
                   <h2 className='flex-1 text-lg font-medium'>
                     Recent Feedback Requests{' '}
-                    {!subscriptionData?.[0] && (
+                    {!subscriptionData?.[0] && !loading && (
                       <span className='text-gray-400'>(Example Data)</span>
                     )}
                   </h2>
@@ -539,6 +553,7 @@ export const HomePage = () => {
               </div>
               <ul className='relative z-0 divide-y divide-gray-200 border-b border-gray-200'>
                 {!subscriptionData?.[0] &&
+                  !loading &&
                   demoFeedbackRequests?.map((request: any, index: number) => (
                     <MainListItem feedbackRequest={request} key={index} />
                   ))}
@@ -554,14 +569,20 @@ export const HomePage = () => {
             <div className='pl-6 lg:w-80'>
               <div className='pt-6 pb-2'>
                 <h2 className='text-sm font-semibold'>
-                  Events{' '}
-                  {!subscriptionData?.[0] && <span className='text-gray-400'>(Example Data)</span>}
+                  Activity Feed{' '}
+                  {!subscriptionData?.[0] && !loading && (
+                    <span className='text-gray-400'>(Example Data)</span>
+                  )}
                 </h2>
               </div>
               <div>
                 <ul className='divide-y divide-gray-200'>
-                  {subscriptionData?.[0] && null}
                   {subscriptionData?.[0] &&
+                    events.map((event: any, index: number) => (
+                      <EventListItem event={event} key={index} />
+                    ))}
+                  {!subscriptionData?.[0] &&
+                    !loading &&
                     demoEvents.map((event, index) => <EventListItem event={event} key={index} />)}
                 </ul>
                 <div className='py-4 text-sm border-t border-gray-200'>

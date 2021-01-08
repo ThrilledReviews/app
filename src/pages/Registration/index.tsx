@@ -90,12 +90,12 @@ export const RegistrationPage = () => {
                   type='submit'
                   className='w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
                 >
-                  Sign in
+                  Sign Up
                 </button>
               </div>
 
               <p className='mt-1 text-center text-sm text-gray-500'>
-                By Signing Up, You Agreeing To Our{' '}
+                By Signing Up, You Agree To Our{' '}
                 <a href='/terms' className='text-blue-500'>
                   Terms of Service
                 </a>{' '}

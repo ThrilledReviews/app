@@ -19,3 +19,5 @@ export const isElevenDigitPhone = toix.str
   .and(toi.str.length(12, 12));
 
 export const isUrl = toix.str.isurl();
+
+export const isBoolean = toi.bool.is();

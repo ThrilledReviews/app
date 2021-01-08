@@ -7,7 +7,7 @@ const createCustomerRecord = async ({ email, uid }: { email?: string; uid: strin
   try {
     // logs.creatingCustomer(uid);
 
-    const stripe = new Stripe(functions.config().stripeSecretKey, {
+    const stripe = new Stripe(functions.config().stripe.sk, {
       apiVersion: '2020-08-27',
       // Register extension as a Stripe plugin
       // https://stripe.com/docs/building-plugins#setappinfo
@@ -34,7 +34,7 @@ const createCustomerRecord = async ({ email, uid }: { email?: string; uid: strin
     // logs.customerCreated(customer.id, customer.livemode);
     return customerRecord;
   } catch (error) {
-    // logs.customerCreationError(error, uid);
+    functions.logger.log(error);
     return null;
   }
 };
@@ -67,6 +67,7 @@ export const createCheckoutSession = functions.firestore
       // logs.creatingCheckoutSession(context.params.id);
       // Get stripe customer id
       let customerRecord = (await snap.ref.parent.parent.get()).data();
+      functions.logger.log(customerRecord);
       if (!customerRecord?.stripeId) {
         const { email } = await admin.auth().getUser(context.params.uid);
         customerRecord = await createCustomerRecord({
