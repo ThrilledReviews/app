@@ -35,6 +35,7 @@ export const EventListItem = ({ event }: { event: AppEvent }) => (
           event.event === 'four_star_review') && (
           <a
             href={`tel:${event.customerPhone}`}
+            style={{ marginTop: '1rem' }}
             className='block text-center sm:hidden p-2 rounded bg-blue-500 text-white'
           >
             Click to Call {event.customerPhone}

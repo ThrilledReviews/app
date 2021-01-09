@@ -194,12 +194,12 @@ export const SettingsPage = () => {
                     >
                       Dashboard
                     </Link>
-                    {/* <Link
-                      to={analyticsRoute}
+                    <Link
+                      to={settingsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
-                      Analytics
-                    </Link> */}
+                      Settings
+                    </Link>
                     <a
                       href={`mailto:fritz@workhorsesw.com?subject=${encodeURIComponent(
                         'FivesFilter Support Request for Account ' + user?.uid
@@ -263,13 +263,13 @@ export const SettingsPage = () => {
                         aria-orientation='vertical'
                         aria-labelledby='user-menu'
                       >
-                        <Link
+                        {/* <Link
                           to={settingsRoute}
                           className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                           role='menuitem'
                         >
                           Account Settings
-                        </Link>
+                        </Link> */}
                         <div
                           onClick={() => firebase.auth().signOut()}
                           className='block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100'

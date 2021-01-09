@@ -15,7 +15,7 @@ export const HomePage = () => {
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [profileOpen, setProfileOpen] = useState(false);
-  const [welcomeModalOpen, setWelcomeModalOpen] = useState(true);
+  const [welcomeModalOpen, setWelcomeModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [user] = useAuthState(firebase.auth());
 
@@ -74,7 +74,7 @@ export const HomePage = () => {
       .firestore()
       .collection('users')
       .doc(user?.uid)
-      .set({ welcomeModalDismissed: true }, { merge: true });
+      .set({ sentTestRequest: true }, { merge: true });
   };
 
   const demoEvents: AppEvent[] = [
@@ -95,6 +95,7 @@ export const HomePage = () => {
       eventName: 'Three Star Review',
       createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
       message: 'Quinn Romanov Left a Three-Star Review.',
+      customerPhone: '+15558859234',
     },
     {
       event: 'five_star_review',
@@ -297,12 +298,12 @@ export const HomePage = () => {
                     >
                       Dashboard
                     </Link>
-                    {/* <Link
-                      to={analyticsRoute}
+                    <Link
+                      to={settingsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
-                      Analytics
-                    </Link> */}
+                      Settings
+                    </Link>
                     <a
                       href={`mailto:fritz@workhorsesw.com?subject=${encodeURIComponent(
                         'FivesFilter Support Request for Account ' + user?.uid
@@ -366,13 +367,13 @@ export const HomePage = () => {
                         aria-orientation='vertical'
                         aria-labelledby='user-menu'
                       >
-                        <Link
+                        {/* <Link
                           to={settingsRoute}
                           className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                           role='menuitem'
                         >
                           Account Settings
-                        </Link>
+                        </Link> */}
                         <div
                           onClick={() => firebase.auth().signOut()}
                           className='block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100'
@@ -418,7 +419,7 @@ export const HomePage = () => {
                       onClick={() => handleCheckout()}
                       className='flex items-center cursor-pointer justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-800 bg-white hover:bg-blue-100'
                     >
-                      Add Payment Method
+                      Get Started For Free!
                     </div>
                   </div>
                 </div>
@@ -484,7 +485,7 @@ export const HomePage = () => {
               <div className='pl-4 pr-6 pb-6 sm:py-6 sm:pl-6 lg:pl-8 xl:pl-0'>
                 <div className='flex items-center justify-between'>
                   <div className='flex-1 space-y-8'>
-                    <div className='space-y-8 sm:space-y-0 sm:flex sm:justify-between sm:items-center xl:block xl:space-y-8'>
+                    <div className='space-y-2 sm:space-y-0 sm:flex sm:justify-between sm:items-center xl:block xl:space-y-8'>
                       {/* <!-- Profile --> */}
                       <div className='hidden sm:flex items-center space-x-3'>
                         <div className='flex-shrink-0 h-12 w-12'>
@@ -552,9 +553,9 @@ export const HomePage = () => {
                           <button
                             onClick={() => handleCheckout()}
                             type='button'
-                            className='mt-3 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-lg font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 xl:mt-3 xl:w-full'
+                            className='mt-3 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-xl font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 xl:mt-3 xl:w-full'
                           >
-                            Activate Your Account To Get Started!
+                            Activate Your Account To Start Asking For Reviews!
                           </button>
                         )}
                       </div>
@@ -614,7 +615,7 @@ export const HomePage = () => {
               <div>
                 <ul className='divide-y divide-gray-200'>
                   {subscriptionData?.[0] &&
-                    events.map((event: any, index: number) => (
+                    events?.map((event: any, index: number) => (
                       <EventListItem event={event} key={index} />
                     ))}
                   {!subscriptionData?.[0] && userDoc?.testRedirectLinkClicked && !loading && (
@@ -728,9 +729,9 @@ export const HomePage = () => {
                         aria-hidden='true'
                       >
                         <path
-                          stroke-linecap='round'
-                          stroke-linejoin='round'
-                          stroke-width='2'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth='2'
                           d='M5 13l4 4L19 7'
                         />
                       </svg>
