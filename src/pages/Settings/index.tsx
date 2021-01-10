@@ -439,6 +439,27 @@ export const SettingsPage = () => {
                 </a>
               </p>
             </div>
+
+            <h3 className='text-xl text-center my-4'>Integrations</h3>
+            <hr className='mb-2' />
+            <a
+              rel='noreferrer'
+              target='_blank'
+              className='text-blue-500 text-lg'
+              href='https://zapier.com/developer/public-invite/124668/85b6453e27e8e658c8b4f6fc5baa7f5f/'
+            >
+              <p className='text-center py-2 px-4 bg-gray-200 c'>
+                Add The Private Zapier Integration
+              </p>
+            </a>
+            <p className='text-center mt-2'>
+              Zapier API Key:
+              <br />
+              <code className='bg-gray-200 text-sm sm:text-lg'>{userDoc?.apiKey}</code>
+            </p>
+            <p className='text-center text-sm text-red-400'>
+              Contact Support immediately if you accidentally share this key with anyone but Zapier.
+            </p>
           </form>
         </main>
       </div>

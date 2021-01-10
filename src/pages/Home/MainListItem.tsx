@@ -5,7 +5,8 @@ export interface FeedbackRequest {
   customerPhone: string;
   resultNumber: number;
   reviewLinkClicked: boolean;
-  createdDate?: firebase.firestore.Timestamp;
+  createdDate: firebase.firestore.Timestamp;
+  source: string;
 }
 
 export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackRequest }) => {
@@ -18,7 +19,10 @@ export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackReq
             <span className='block'>
               <h2 className='text-sm font-medium'>
                 <span className='absolute inset-0' aria-hidden='true'></span>
-                {feedbackRequest.customerName}
+                {feedbackRequest.customerName}{' '}
+                {feedbackRequest.source && (
+                  <span className='text-gray-500'>via {feedbackRequest?.source}</span>
+                )}
               </h2>
             </span>
           </div>
@@ -65,10 +69,10 @@ export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackReq
                   '⚫⚫⚫⚫⚫'.slice(feedbackRequest.resultNumber, 5)}
               </span>
             ) : (
-              <span className='px-2 font-bold'>No Review</span>
+              <span className='px-2 font-bold'>No Review Yet</span>
             )}
             <span aria-hidden='true'>&middot;</span>
-            <span>{new Date().toLocaleDateString()}</span>
+            <span>{feedbackRequest.createdDate?.toDate().toLocaleDateString()}</span>
           </p>
         </div>
       </div>

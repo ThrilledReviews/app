@@ -210,9 +210,10 @@ export const OnboardingPage = () => {
                 <div className='pt-6 sm:pt-5'>
                   <div role='group' aria-labelledby='label-email'>
                     <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline'>
+                      <div />
                       <div className='mt-4 sm:mt-0 sm:col-span-2'>
                         <div className='max-w-lg space-y-4'>
-                          <div className='relative flex items-start'>
+                          <div className='relative flex items-center'>
                             <div className='flex items-center h-5'>
                               <input
                                 required

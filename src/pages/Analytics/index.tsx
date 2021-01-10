@@ -335,7 +335,7 @@ export const AnalyticsPage = () => {
 
       <div className='bg-gray-100 min-h-screen -mt-16 pt-16'>
         <h1 className='text-3xl text-center mt-2'>Feedback & Review Analytics</h1>
-        <h4 className='text-lg text-center mt-8 mb-2'>Timeframe</h4>
+        <h4 className='text-lg text-center mt-4 mb-2'>Timeframe</h4>
         <fieldset className='flex justify-center'>
           <>
             <div className='bg-white flex'>
@@ -418,317 +418,319 @@ export const AnalyticsPage = () => {
             </div>
           </>
         </fieldset>
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-          {/* <!-- We've used 3xl here, but feel free to try other max-widths based on your needs --> */}
-          <div className='max-w-5xl mx-auto'>
-            <div className='my-8'>
-              <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-                <div className='mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4'>
-                  {/* <!-- Card --> */}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6 text-gray-900'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M7 20l4-16m2 16l4-16M6 9h14M4 15h14'
-                            />
-                          </svg>
-                        </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              Total Requests
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekRequestCount
-                                  : showLastMonth
-                                  ? lastMonthRequestCount
-                                  : allTimeRequestCount}
-                              </div>
-                            </dd>
-                          </dl>
-                        </div>
-                      </div>
-                    </div>
-                  </div>{' '}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3'
-                            />
-                          </svg>
-                        </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              Total Reviews
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekResponseCount
-                                  : showLastMonth
-                                  ? lastMonthResponseCount
-                                  : allTimeResponseCount}
-                              </div>
-                            </dd>
-                          </dl>
+        {feedback?.length > 0 ? (
+          <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+            {/* <!-- We've used 3xl here, but feel free to try other max-widths based on your needs --> */}
+            <div className='max-w-5xl mx-auto'>
+              <div className='my-8'>
+                <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
+                  <div className='mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4'>
+                    {/* <!-- Card --> */}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6 text-gray-900'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M7 20l4-16m2 16l4-16M6 9h14M4 15h14'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                Total Requests
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekRequestCount
+                                    : showLastMonth
+                                    ? lastMonthRequestCount
+                                    : allTimeRequestCount}
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>{' '}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'
-                            />
-                          </svg>
-                        </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              5-Star Reviews
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekFiveStars
-                                  : showLastMonth
-                                  ? lastMonthFiveStars
-                                  : allTimeFiveStars}
-                              </div>
-                            </dd>
-                          </dl>
-                        </div>
-                      </div>
-                    </div>
-                  </div>{' '}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'
-                            />
-                          </svg>
-                        </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              Review Link Clicks
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekLinkClicks
-                                  : showLastMonth
-                                  ? lastMonthLinkClicks
-                                  : allTimeLinkClicks}
-                              </div>
-                            </dd>
-                          </dl>
+                    </div>{' '}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                Total Reviews
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekResponseCount
+                                    : showLastMonth
+                                    ? lastMonthResponseCount
+                                    : allTimeResponseCount}
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>{' '}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'
-                            />
-                          </svg>
-                        </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              Clicks / Requests
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekClickPct
-                                  : showLastMonth
-                                  ? lastMonthClickPct
-                                  : allTimeClickPct}
-                                %
-                              </div>
-                            </dd>
-                          </dl>
-                        </div>
-                      </div>
-                    </div>
-                  </div>{' '}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3'
-                            />
-                          </svg>
-                        </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              Reviews / Requests
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekReviewPct
-                                  : showLastMonth
-                                  ? lastMonthReviewPct
-                                  : allTimeReviewPct}
-                                %
-                              </div>
-                            </dd>
-                          </dl>
+                    </div>{' '}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                5-Star Reviews
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekFiveStars
+                                    : showLastMonth
+                                    ? lastMonthFiveStars
+                                    : allTimeFiveStars}
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>{' '}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'
-                            />
-                          </svg>
-                        </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              5-Stars / Reviews
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekFiveStarPct
-                                  : showLastMonth
-                                  ? lastMonthFiveStarPct
-                                  : allTimeFiveStarPct}
-                                %
-                              </div>
-                            </dd>
-                          </dl>
+                    </div>{' '}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                Review Link Clicks
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekLinkClicks
+                                    : showLastMonth
+                                    ? lastMonthLinkClicks
+                                    : allTimeLinkClicks}
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>{' '}
-                  <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
-                    <div className='p-5'>
-                      <div className='flex items-center'>
-                        <div className='flex-shrink-0'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            className='h-6 w-6'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth={2}
-                              d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'
-                            />
-                          </svg>
+                    </div>{' '}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                Clicks / Requests
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekClickPct
+                                    : showLastMonth
+                                    ? lastMonthClickPct
+                                    : allTimeClickPct}
+                                  %
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
                         </div>
-                        <div className='ml-5 w-0 flex-1'>
-                          <dl>
-                            <dt className='text-sm font-medium text-gray-500 truncate'>
-                              Clicks / 5-Stars
-                            </dt>
-                            <dd>
-                              <div className='text-lg font-medium text-gray-900'>
-                                {showLastWeek
-                                  ? lastWeekFiveStarPct
-                                  : showLastMonth
-                                  ? lastMonthFiveStarPct
-                                  : allTimeFiveStarPct}
-                                %
-                              </div>
-                            </dd>
-                          </dl>
+                      </div>
+                    </div>{' '}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                Reviews / Requests
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekReviewPct
+                                    : showLastMonth
+                                    ? lastMonthReviewPct
+                                    : allTimeReviewPct}
+                                  %
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
+                        </div>
+                      </div>
+                    </div>{' '}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                5-Stars / Reviews
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekFiveStarPct
+                                    : showLastMonth
+                                    ? lastMonthFiveStarPct
+                                    : allTimeFiveStarPct}
+                                  %
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
+                        </div>
+                      </div>
+                    </div>{' '}
+                    <div className='bg-white overflow-hidden shadow-lg rounded-lg'>
+                      <div className='p-5'>
+                        <div className='flex items-center'>
+                          <div className='flex-shrink-0'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              stroke='currentColor'
+                              className='h-6 w-6'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                strokeWidth={2}
+                                d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'
+                              />
+                            </svg>
+                          </div>
+                          <div className='ml-5 w-0 flex-1'>
+                            <dl>
+                              <dt className='text-sm font-medium text-gray-500 truncate'>
+                                Clicks / 5-Stars
+                              </dt>
+                              <dd>
+                                <div className='text-lg font-medium text-gray-900'>
+                                  {showLastWeek
+                                    ? lastWeekFiveStarPct
+                                    : showLastMonth
+                                    ? lastMonthFiveStarPct
+                                    : allTimeFiveStarPct}
+                                  %
+                                </div>
+                              </dd>
+                            </dl>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -737,7 +739,11 @@ export const AnalyticsPage = () => {
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <p className='text-center mt-2'>
+            No Analytics Data Yet. Send some feedback requests to get started
+          </p>
+        )}
       </div>
     </>
   );

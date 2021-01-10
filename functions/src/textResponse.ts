@@ -97,7 +97,7 @@ The customer's phone number is ${feedbackRequestDoc.data().customerPhone}`,
     setTimeout(() => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });
       res.end(twimlResponse.toString());
-    }, 10000);
+    }, 3000);
   } else if (response === '5') {
     await firestore()
       .collection('users')
@@ -119,13 +119,13 @@ https://us-central1-thrill-check.cloudfunctions.net/redirect?b=${userDoc.id}&c=$
     setTimeout(() => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });
       res.end(twimlResponse.toString());
-    }, 10000);
+    }, 3000);
   } else {
     twimlResponse.message(invalidInputResponse);
 
     setTimeout(() => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });
       res.end(twimlResponse.toString());
-    }, 10000);
+    }, 3000);
   }
 };

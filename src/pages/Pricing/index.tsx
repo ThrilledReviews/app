@@ -2,10 +2,15 @@ import { useStripe } from '@stripe/react-stripe-js';
 import { Stripe } from '@stripe/stripe-js';
 import firebase from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useCollectionDataOnce, useDocumentData } from 'react-firebase-hooks/firestore';
 
 export const PricingPage = () => {
   const stripe = useStripe() as Stripe;
   const [user] = useAuthState(firebase.auth());
+  const [userDoc] = useDocumentData(firebase.firestore().collection('users').doc(user?.uid)) as any;
+  const [subscription] = useCollectionDataOnce(
+    firebase.firestore().collection('users').doc(user?.uid).collection('subscriptions')
+  );
 
   const handleCheckout = async (price: string) => {
     const docRef = await firebase
@@ -44,7 +49,8 @@ export const PricingPage = () => {
           <p className='mt-3 max-w-3xl mx-auto text-xl text-white sm:mt-5 sm:text-2xl'>
             We can't wait for you to get started.{' '}
             <span className='text-white bg-transparent'>
-              Please choose a plan to continue to your 30 day Free Trial.
+              Please choose a plan to continue
+              {subscription && subscription?.length > 0 ? ' to your 30 day Free Trial.' : '.'}
             </span>
           </p>
         </div>
@@ -150,7 +156,13 @@ export const PricingPage = () => {
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
                           <span
-                            onClick={() => handleCheckout('price_1I7k8FLjqDOPvfebtbgR52ZJ')}
+                            onClick={() =>
+                              handleCheckout(
+                                userDoc?.freeSubscription
+                                  ? 'price_1I87ibLjqDOPvfebviwtlU3I'
+                                  : 'price_1I7k8FLjqDOPvfebtbgR52ZJ'
+                              )
+                            }
                             className='block cursor-pointer w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-blue-600 hover:bg-gray-50'
                             aria-describedby='tier-hobby'
                           >
@@ -319,7 +331,13 @@ export const PricingPage = () => {
                     <div className='mt-10'>
                       <div className='rounded-lg shadow-md'>
                         <span
-                          onClick={() => handleCheckout('price_1I7k8RLjqDOPvfebUSaIBKps')}
+                          onClick={() =>
+                            handleCheckout(
+                              userDoc?.freeSubscription
+                                ? 'price_1I87ibLjqDOPvfebviwtlU3I'
+                                : 'price_1I7k8RLjqDOPvfebUSaIBKps'
+                            )
+                          }
                           className='block w-full text-center cursor-pointer rounded-lg border border-transparent bg-blue-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-blue-700'
                           aria-describedby='tier-growth'
                         >
@@ -425,11 +443,20 @@ export const PricingPage = () => {
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
                           <a
+                            onClick={() =>
+                              handleCheckout(
+                                userDoc?.freeSubscription
+                                  ? 'price_1I87ibLjqDOPvfebviwtlU3I'
+                                  : 'price_1I7k8RLjqDOPvfebUSaIBKps'
+                              )
+                            }
                             href='mailto:fritz@workhorsesw.com?subject=Enterprise%20Pricing%20Inquiry'
+                            target='_blank'
+                            rel='noreferrer'
                             className='block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-blue-600 hover:bg-gray-50'
                             aria-describedby='tier-scale'
                           >
-                            Contact Us
+                            Start Trial + Email Us
                           </a>
                         </div>
                       </div>

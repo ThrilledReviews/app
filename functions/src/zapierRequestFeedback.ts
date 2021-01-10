@@ -4,7 +4,7 @@ import { parsePhoneNumber } from 'libphonenumber-js';
 import { Twilio } from 'twilio';
 
 export const handleZapierRequestFeedback = async (req: https.Request, res: Response) => {
-  const apiKey = req.params['apiKey'];
+  const apiKey = req.query['apiKey'];
   const twilio = new Twilio(config().twilio.sid, config().twilio.token);
   const userDoc = (await firestore().collection('users').where('apiKey', '==', apiKey).get())
     .docs[0];
@@ -13,7 +13,7 @@ export const handleZapierRequestFeedback = async (req: https.Request, res: Respo
 
   const phoneNumber = parsePhoneNumber(customerPhone, 'US');
   let from = userDoc.data().appPhone;
-  if (!userDoc.data().appPhone) {
+  if (userDoc.data() && !userDoc.data().appPhone) {
     const { phoneNumber: newPhoneNumber } = await twilio.incomingPhoneNumbers.create({
       areaCode: userDoc.get('businessAreaCode'),
       smsUrl: 'https://us-central1-thrill-check.cloudfunctions.net/textResponse',
@@ -35,6 +35,7 @@ export const handleZapierRequestFeedback = async (req: https.Request, res: Respo
         createdDate: new Date(),
         resultNumber: -1,
         reviewLinkClicked: false,
+        source: 'Zapier',
       })
     ).get();
 
