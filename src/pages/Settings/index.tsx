@@ -6,7 +6,7 @@ import { useDocumentData, useCollectionData } from 'react-firebase-hooks/firesto
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useStripe } from '@stripe/react-stripe-js';
 import { Stripe } from '@stripe/stripe-js';
-import { homeRoute, settingsRoute } from '../../constants/routes';
+import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
 
 export const SettingsPage = () => {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -40,15 +40,6 @@ export const SettingsPage = () => {
     userDoc?.notificationPhoneNumber,
     userDoc?.notificationsEnabled,
   ]);
-
-  const [subscriptionData, loading] = useCollectionData(
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(user?.uid)
-      .collection('subscriptions')
-      .where('status', '==', 'active')
-  );
 
   const handleManageBilling = async () => {
     const { data } = await firebase
@@ -195,6 +186,12 @@ export const SettingsPage = () => {
                       Dashboard
                     </Link>
                     <Link
+                      to={analyticsRoute}
+                      className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
+                    >
+                      Analytics
+                    </Link>
+                    <Link
                       to={settingsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
@@ -284,44 +281,43 @@ export const SettingsPage = () => {
               </div>
             </div>
           </div>
-          {!subscriptionData?.[0] && !loading && (
-            <div className='bg-blue-800'>
-              <div className='max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8'>
-                <div className='flex items-center justify-between flex-wrap'>
-                  <div className='w-0 flex-1 sm:flex items-center hidden'>
-                    <span className='flex p-2 rounded-lg bg-blue-900 border-white border'>
-                      <svg
-                        className='h-6 w-6 text-white'
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                      >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth={2}
-                          d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
-                        />
-                      </svg>
-                    </span>
-                    <p className='ml-3 font-medium text-white truncate'>
-                      <span className='md:hidden'>You're viewing the demo.</span>
-                      <span className='hidden md:inline'>You're viewing the FivesFilter demo.</span>
-                    </p>
-                  </div>
-                  <div className='flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto'>
-                    <div
-                      onClick={() => handleCheckout()}
-                      className='flex items-center cursor-pointer justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-800 bg-white hover:bg-blue-100'
+
+          <div className='bg-blue-800'>
+            <div className='max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8'>
+              <div className='flex items-center justify-between flex-wrap'>
+                <div className='w-0 flex-1 sm:flex items-center hidden'>
+                  <span className='flex p-2 rounded-lg bg-blue-900 border-white border'>
+                    <svg
+                      className='h-6 w-6 text-white'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      stroke='currentColor'
                     >
-                      Add Payment Method
-                    </div>
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+                      />
+                    </svg>
+                  </span>
+                  <p className='ml-3 font-medium text-white truncate'>
+                    <span className='md:hidden'>You're viewing the demo.</span>
+                    <span className='hidden md:inline'>You're viewing the FivesFilter demo.</span>
+                  </p>
+                </div>
+                <div className='flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto'>
+                  <div
+                    onClick={() => handleCheckout()}
+                    className='flex items-center cursor-pointer justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-800 bg-white hover:bg-blue-100'
+                  >
+                    Add Payment Method
                   </div>
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
           {/* <!--
     Mobile menu, toggle classes based on menu state.
@@ -332,16 +328,16 @@ export const SettingsPage = () => {
             <div className='px-2 pt-2 pb-3'>
               <Link
                 to={homeRoute}
-                className='block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-800'
+                className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 bg-blue-600'
               >
                 Dashboard
               </Link>
-              {/* <Link
+              <Link
                 to={analyticsRoute}
                 className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 bg-blue-600'
               >
                 Analytics
-              </Link> */}
+              </Link>
               <a
                 href='mailto:fritz@workhorsesw.com'
                 target='_blank'
@@ -494,17 +490,15 @@ export const SettingsPage = () => {
                   Send Password Reset Email
                 </button>
               </div>{' '}
-              {subscriptionData?.[0] && !loading && (
-                <div className='flex justify-end'>
-                  <button
-                    type='button'
-                    onClick={() => handleManageBilling()}
-                    className='inline-flex w-full justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-                  >
-                    Manage Billing
-                  </button>
-                </div>
-              )}
+              <div className='flex justify-end'>
+                <button
+                  type='button'
+                  onClick={() => handleManageBilling()}
+                  className='inline-flex w-full justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                >
+                  Manage Billing
+                </button>
+              </div>
               <p>
                 If you'd like to change the default text messages FivesFilter sends to your
                 customers, please{' '}

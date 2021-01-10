@@ -25,7 +25,7 @@ export const App = () => {
   if (user) {
     return (
       <BrowserRouter>
-        <AuthedRouter uid={user.uid} />
+        <AuthedRouter />
       </BrowserRouter>
     );
   }

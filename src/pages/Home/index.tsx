@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import { Stripe } from '@stripe/stripe-js';
 import { useStripe } from '@stripe/react-stripe-js';
-import { homeRoute, settingsRoute } from '../../constants/routes';
+import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
 import { MainListItem, FeedbackRequest } from './MainListItem';
 import { AppEvent, EventListItem } from './EventListItem';
 
@@ -53,14 +53,14 @@ export const HomePage = () => {
       .limit(10)
   ) as [any, boolean, any];
 
-  const [subscriptionData, loading] = useCollectionData(
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(user?.uid)
-      .collection('subscriptions')
-      .where('status', '==', 'active')
-  );
+  // const [subscriptionData, loading] = useCollectionData(
+  //   firebase
+  //     .firestore()
+  //     .collection('users')
+  //     .doc(user?.uid)
+  //     .collection('subscriptions')
+  //     .where('status', 'in',  ['trialing','active'])
+  // );
 
   const sendTestFeedbackRequest = async () => {
     setWelcomeModalOpen(false);
@@ -299,6 +299,12 @@ export const HomePage = () => {
                       Dashboard
                     </Link>
                     <Link
+                      to={analyticsRoute}
+                      className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
+                    >
+                      Analytics
+                    </Link>
+                    <Link
                       to={settingsRoute}
                       className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
                     >
@@ -388,44 +394,6 @@ export const HomePage = () => {
               </div>
             </div>
           </div>
-          {!subscriptionData?.[0] && !loading && (
-            <div className='bg-blue-800'>
-              <div className='max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8'>
-                <div className='flex items-center justify-between flex-wrap'>
-                  <div className='w-0 flex-1 sm:flex items-center hidden'>
-                    <span className='flex p-2 rounded-lg bg-blue-900 border-white border'>
-                      <svg
-                        className='h-6 w-6 text-white'
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                      >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth={2}
-                          d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
-                        />
-                      </svg>
-                    </span>
-                    <p className='ml-3 font-medium text-white truncate'>
-                      <span className='md:hidden'>You're viewing the demo.</span>
-                      <span className='hidden md:inline'>You're viewing the FivesFilter demo.</span>
-                    </p>
-                  </div>
-                  <div className='flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto'>
-                    <div
-                      onClick={() => handleCheckout()}
-                      className='flex items-center cursor-pointer justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-800 bg-white hover:bg-blue-100'
-                    >
-                      Get Started For Free!
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* <!--
         Mobile menu, toggle classes based on menu state.
@@ -436,16 +404,16 @@ export const HomePage = () => {
             <div className='px-2 pt-2 pb-3'>
               <Link
                 to={homeRoute}
-                className='block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-800'
+                className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 bg-blue-600'
               >
                 Dashboard
               </Link>
-              {/* <Link
+              <Link
                 to={analyticsRoute}
                 className='block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 bg-blue-600'
               >
                 Analytics
-              </Link> */}
+              </Link>
               <a
                 href='mailto:fritz@workhorsesw.com'
                 target='_blank'
@@ -518,38 +486,37 @@ export const HomePage = () => {
                       <div className='flex flex-col sm:flex-row xl:flex-col'>
                         <h3 className='text-lg text-center mb-2'>Request Feedback</h3>
                         <hr className='border border-gray-600' />
-                        {subscriptionData?.[0] && (
-                          <>
-                            <div className='mt-3 ml-2 sm:ml-0'>
-                              <label className='text-sm'>Customer Phone</label>
-                              <input
-                                value={customerPhone}
-                                onChange={(e) => setCustomerPhone(e.target.value)}
-                                type='text'
-                                placeholder='+15558982222'
-                                className='inline-flex items-center justify-center px-4 py-2 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 xl:w-full'
-                              />
-                            </div>
-                            <div className='mt-3 ml-2 sm:ml-0'>
-                              <label className='text-sm'>Customer Name</label>
-                              <input
-                                value={customerName}
-                                onChange={(e) => setCustomerName(e.target.value)}
-                                type='text'
-                                placeholder='Johnathan Doe'
-                                className='inline-flex items-center justify-center px-4 py-2 pr-5 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 sm:mt-0 xl:mt-0 xl:w-full'
-                              />
-                            </div>
-                            <button
-                              onClick={() => handleRequestFeedback()}
-                              type='button'
-                              className='mt-3 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 xl:mt-3 xl:w-full'
-                            >
-                              Send Feedback Request
-                            </button>
-                          </>
-                        )}
-                        {!subscriptionData?.[0] && !loading && (
+                        <>
+                          <div className='mt-3 ml-2 sm:ml-0'>
+                            <label className='text-sm'>Customer Phone</label>
+                            <input
+                              value={customerPhone}
+                              onChange={(e) => setCustomerPhone(e.target.value)}
+                              type='text'
+                              placeholder='+15558982222'
+                              className='inline-flex items-center justify-center px-4 py-2 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 xl:w-full'
+                            />
+                          </div>
+                          <div className='mt-3 ml-2 sm:ml-0'>
+                            <label className='text-sm'>Customer Name</label>
+                            <input
+                              value={customerName}
+                              onChange={(e) => setCustomerName(e.target.value)}
+                              type='text'
+                              placeholder='Johnathan Doe'
+                              className='inline-flex items-center justify-center px-4 py-2 pr-5 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 sm:mt-0 xl:mt-0 xl:w-full'
+                            />
+                          </div>
+                          <button
+                            onClick={() => handleRequestFeedback()}
+                            type='button'
+                            className='mt-3 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 xl:mt-3 xl:w-full'
+                          >
+                            Send Feedback Request
+                          </button>
+                        </>
+
+                        {/* {!subscriptionData?.[0] && !loading && (
                           <button
                             onClick={() => handleCheckout()}
                             type='button'
@@ -557,7 +524,7 @@ export const HomePage = () => {
                           >
                             Activate Your Account To Start Asking For Reviews!
                           </button>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </div>
@@ -571,14 +538,14 @@ export const HomePage = () => {
                 <div className='flex items-center'>
                   <h2 className='flex-1 text-lg font-medium'>
                     Recent Feedback Requests{' '}
-                    {!subscriptionData?.[0] && !loading && (
+                    {/* {!subscriptionData?.[0] && !loading && (
                       <span className='text-gray-400'>(Example Data)</span>
-                    )}
+                    )} */}
                   </h2>
                 </div>
               </div>
               <ul className='relative z-0 divide-y divide-gray-200 border-b border-gray-200'>
-                {!subscriptionData?.[0] && !loading && userDoc?.testResultNumber && (
+                {/* {!subscriptionData?.[0] && !loading && userDoc?.testResultNumber && (
                   <MainListItem
                     feedbackRequest={{
                       customerName: userDoc?.fullName,
@@ -593,11 +560,10 @@ export const HomePage = () => {
                   !loading &&
                   demoFeedbackRequests?.map((request: any, index: number) => (
                     <MainListItem feedbackRequest={request} key={index} />
-                  ))}
-                {subscriptionData?.[0] &&
-                  feedbackRequests?.map((request: any, index: number) => (
-                    <MainListItem feedbackRequest={request} key={index} />
-                  ))}
+                  ))} */}
+                {feedbackRequests?.map((request: any, index: number) => (
+                  <MainListItem feedbackRequest={request} key={index} />
+                ))}
               </ul>
             </div>
           </div>
@@ -607,18 +573,17 @@ export const HomePage = () => {
               <div className='pt-6 pb-2'>
                 <h2 className='text-sm font-semibold'>
                   Activity Feed{' '}
-                  {!subscriptionData?.[0] && !loading && (
+                  {/* {!subscriptionData?.[0] && !loading && (
                     <span className='text-gray-400'>(Example Data)</span>
-                  )}
+                  )} */}
                 </h2>
               </div>
               <div>
                 <ul className='divide-y divide-gray-200'>
-                  {subscriptionData?.[0] &&
-                    events?.map((event: any, index: number) => (
-                      <EventListItem event={event} key={index} />
-                    ))}
-                  {!subscriptionData?.[0] && userDoc?.testRedirectLinkClicked && !loading && (
+                  {events?.map((event: any, index: number) => (
+                    <EventListItem event={event} key={index} />
+                  ))}
+                  {/* {!subscriptionData?.[0] && userDoc?.testRedirectLinkClicked && !loading && (
                     <EventListItem
                       event={{
                         createdDate: userDoc?.testRedirectClickedDate,
@@ -642,7 +607,7 @@ export const HomePage = () => {
                   )}
                   {!subscriptionData?.[0] &&
                     !loading &&
-                    demoEvents.map((event, index) => <EventListItem event={event} key={index} />)}
+                    demoEvents.map((event, index) => <EventListItem event={event} key={index} />)} */}
                 </ul>
                 <div className='py-4 text-sm border-t border-gray-200'>
                   {/* <Link
@@ -764,7 +729,7 @@ export const HomePage = () => {
                     <button
                       onClick={() => sendTestFeedbackRequest()}
                       type='button'
-                      className='inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-xl'
+                      className='inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-xl'
                     >
                       Send Me The Test
                       <br />

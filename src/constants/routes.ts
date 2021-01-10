@@ -10,5 +10,4 @@ export const forgotPasswordRoute = '/forgot-password';
 export const onboardingRoute = '/onboarding';
 export const homeRoute = '/dashboard';
 export const analyticsRoute = '/analytics';
-// export const messageSettingsRoute = '/settings';
 export const settingsRoute = '/settings';
