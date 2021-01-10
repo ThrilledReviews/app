@@ -27,7 +27,7 @@ export const AuthedRouter = () => {
 
   if (!userDoc) return <OnboardingPage />;
 
-  if (subscriptionData?.length === 0) return <PricingPage />;
+  if (!(subscriptionData?.length === 0)) return <PricingPage />;
 
   return (
     <Switch>

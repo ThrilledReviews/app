@@ -2,10 +2,8 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { Transition } from '@headlessui/react';
-import { useDocumentData, useCollectionData } from 'react-firebase-hooks/firestore';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useStripe } from '@stripe/react-stripe-js';
-import { Stripe } from '@stripe/stripe-js';
 import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
 
 export const SettingsPage = () => {
@@ -17,7 +15,6 @@ export const SettingsPage = () => {
   const [businessPhoneNumber, setBusinessPhoneNumber] = useState('');
   const [notificationPhoneNumber, setNotificationPhoneNumber] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const stripe = useStripe() as Stripe;
   const [user] = useAuthState(firebase.auth());
   const [userDoc] = useDocumentData(firebase.firestore().collection('users').doc(user?.uid)) as [
     any,
@@ -48,32 +45,6 @@ export const SettingsPage = () => {
       returnUrl: window.location.origin,
     });
     window.location.assign(data.url);
-  };
-
-  const handleCheckout = async () => {
-    const docRef = await firebase
-      .firestore()
-      .collection('users')
-      .doc(user?.uid)
-      .collection('checkouts')
-      .add({
-        price: 'price_1I74djLjqDOPvfebNXHhHBPH',
-        success_url: window.location.origin,
-        cancel_url: window.location.origin,
-      });
-    docRef.onSnapshot((snap) => {
-      const { error, sessionId } = snap.data() as any;
-      if (error) {
-        // Show an error to your customer and
-        // inspect your Cloud Function logs in the Firebase console.
-        alert(`An error occured: ${error.message}`);
-      }
-      if (sessionId) {
-        // We have a session, let's redirect to Checkout
-        // Init Stripe
-        stripe.redirectToCheckout({ sessionId });
-      }
-    });
   };
 
   return (
@@ -260,13 +231,6 @@ export const SettingsPage = () => {
                         aria-orientation='vertical'
                         aria-labelledby='user-menu'
                       >
-                        {/* <Link
-                          to={settingsRoute}
-                          className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
-                          role='menuitem'
-                        >
-                          Account Settings
-                        </Link> */}
                         <div
                           onClick={() => firebase.auth().signOut()}
                           className='block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100'
@@ -276,43 +240,6 @@ export const SettingsPage = () => {
                         </div>
                       </div>
                     </Transition>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='bg-blue-800'>
-            <div className='max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8'>
-              <div className='flex items-center justify-between flex-wrap'>
-                <div className='w-0 flex-1 sm:flex items-center hidden'>
-                  <span className='flex p-2 rounded-lg bg-blue-900 border-white border'>
-                    <svg
-                      className='h-6 w-6 text-white'
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
-                      />
-                    </svg>
-                  </span>
-                  <p className='ml-3 font-medium text-white truncate'>
-                    <span className='md:hidden'>You're viewing the demo.</span>
-                    <span className='hidden md:inline'>You're viewing the FivesFilter demo.</span>
-                  </p>
-                </div>
-                <div className='flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto'>
-                  <div
-                    onClick={() => handleCheckout()}
-                    className='flex items-center cursor-pointer justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-blue-800 bg-white hover:bg-blue-100'
-                  >
-                    Add Payment Method
                   </div>
                 </div>
               </div>
@@ -367,11 +294,11 @@ export const SettingsPage = () => {
             </div>
           </div>
         </nav>
-        <main className='max-w-lg mx-auto pt-10 pb-12 px-4 lg:pb-16'>
+        <main className='max-w-lg mx-auto pt-2 pb-12 px-4 lg:pb-16'>
           <form>
             <div className='space-y-6'>
               <div>
-                <h1 className='text-lg leading-6 font-medium text-gray-900'>Account Settings</h1>
+                <h1 className='text-3xl text-center text-gray-900'>Account Settings</h1>
               </div>
               <div>
                 <label htmlFor='project_name' className='block text-sm font-medium text-gray-700'>

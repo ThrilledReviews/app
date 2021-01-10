@@ -8,6 +8,7 @@ import {
   isUrl,
   isBoolean,
 } from './utils/validation';
+import { v4 } from 'uuid';
 
 interface OnboardData {
   fullName: string;
@@ -24,6 +25,7 @@ interface OnboardData {
   fiveStarResponse?: string;
   oneToFourStarResponse?: string;
   outreachMessage?: string;
+  apiKey?: string;
 }
 
 export const handleOnboardUser = async (
@@ -52,6 +54,7 @@ Reviews are very important to our business - would you mind clicking this link a
   data.oneToFourStarResponse = `We're sorry to hear that our team didn't meet your expectations. We'll follow up to see what went wrong.`;
   data.outreachMessage = `Thanks for choosing ${data.businessName}! On a scale of 1-5, how did we do? (Reply with only a number, 1-5)`;
   data.email = (await auth().getUser(context.auth.uid)).email;
+  data.apiKey = v4();
 
   await firestore().collection('users').doc(context.auth.uid).set(data);
 

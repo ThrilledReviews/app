@@ -4,14 +4,11 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
-import { Stripe } from '@stripe/stripe-js';
-import { useStripe } from '@stripe/react-stripe-js';
 import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
-import { MainListItem, FeedbackRequest } from './MainListItem';
-import { AppEvent, EventListItem } from './EventListItem';
+import { MainListItem /*FeedbackRequest*/ } from './MainListItem';
+import { /*AppEvent,*/ EventListItem } from './EventListItem';
 
 export const HomePage = () => {
-  const stripe = useStripe() as Stripe;
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [profileOpen, setProfileOpen] = useState(false);
@@ -77,114 +74,10 @@ export const HomePage = () => {
       .set({ sentTestRequest: true }, { merge: true });
   };
 
-  const demoEvents: AppEvent[] = [
-    {
-      event: 'review_link_clicked',
-      eventName: 'Review Link Clicked',
-      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-      message: 'Joey Valentino Clicked a Review Link!',
-    },
-    {
-      event: 'five_star_review',
-      eventName: 'Five Star Review',
-      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-      message: 'Joey Valentino Left a Five-Star Review!',
-    },
-    {
-      event: 'three_star_review',
-      eventName: 'Three Star Review',
-      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-      message: 'Quinn Romanov Left a Three-Star Review.',
-      customerPhone: '+15558859234',
-    },
-    {
-      event: 'five_star_review',
-      eventName: 'Five Star Review',
-      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-      message: 'Morpheus Fishburne Left a Five-Star Review!',
-    },
-    {
-      event: 'review_link_clicked',
-      eventName: 'Review Link Clicked',
-      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-      message: 'Neo Reeves Clicked a Review Link!',
-    },
-    {
-      event: 'five_star_review',
-      eventName: 'Five Star Review',
-      createdDate: new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-      message: 'Neo Reeves Left a Five-Star Review!',
-    },
-  ];
-
-  const demoFeedbackRequests: FeedbackRequest[] = [
-    {
-      customerName: 'Joey Valentino',
-      customerPhone: '+15558859234',
-      reviewLinkClicked: true,
-      resultNumber: 5,
-      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-    },
-    {
-      customerName: 'Quinn Romanov',
-      customerPhone: '+15552359234',
-      reviewLinkClicked: false,
-      resultNumber: 3,
-      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-    },
-    {
-      customerName: 'Janet Koch',
-      customerPhone: '+15555232234',
-      reviewLinkClicked: false,
-      resultNumber: -1,
-      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-    },
-    {
-      customerName: 'Morpheus Fishburne',
-      customerPhone: '+15558859234',
-      reviewLinkClicked: false,
-      resultNumber: 5,
-      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-    },
-    {
-      customerName: 'Neo Reeves',
-      customerPhone: '+15228859234',
-      reviewLinkClicked: true,
-      resultNumber: 5,
-      createdDate: firebase.firestore && new firebase.firestore.Timestamp(Date.now() / 1000, 0),
-    },
-  ];
-
   const handleRequestFeedback = () => {
     firebase.functions().httpsCallable('requestFeedback')({ customerName, customerPhone });
     setCustomerName('');
     setCustomerPhone('');
-  };
-
-  const handleCheckout = async () => {
-    const docRef = await firebase
-      .firestore()
-      .collection('users')
-      .doc(user?.uid)
-      .collection('checkouts')
-      .add({
-        price: 'price_1I74djLjqDOPvfebNXHhHBPH',
-        success_url: window.location.origin,
-        cancel_url: window.location.origin,
-      });
-    docRef.onSnapshot((snap) => {
-      const { error, sessionId } = snap.data() as any;
-      if (error) {
-        // Show an error to your customer and
-        // inspect your Cloud Function logs in the Firebase console.
-        alert(`An error occured: ${error.message}`);
-      }
-      if (sessionId) {
-        // We have a session, let's redirect to Checkout
-        // Init Stripe
-        stripe.redirectToCheckout({ sessionId });
-      }
-    });
   };
 
   return (

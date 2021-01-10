@@ -1,4 +1,36 @@
+import { useStripe } from '@stripe/react-stripe-js';
+import { Stripe } from '@stripe/stripe-js';
+import firebase from 'firebase/app';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
 export const PricingPage = () => {
+  const stripe = useStripe() as Stripe;
+  const [user] = useAuthState(firebase.auth());
+
+  const handleCheckout = async (price: string) => {
+    const docRef = await firebase
+      .firestore()
+      .collection('users')
+      .doc(user?.uid)
+      .collection('checkouts')
+      .add({
+        price,
+        success_url: window.location.origin,
+        cancel_url: window.location.origin,
+      });
+    docRef.onSnapshot((snap) => {
+      const { error, sessionId } = snap.data() as any;
+      if (error) {
+        // Show an error to your customer and
+        // inspect your Cloud Function logs in the Firebase console.
+        alert(`An error occured: ${error.message}`);
+      }
+      if (sessionId) {
+        stripe.redirectToCheckout({ sessionId });
+      }
+    });
+  };
+
   return (
     <div className='bg-gray-900'>
       <div className='pt-8 px-4 sm:px-6 lg:px-8 lg:pt-10'>
@@ -12,13 +44,13 @@ export const PricingPage = () => {
           <p className='mt-3 max-w-3xl mx-auto text-xl text-white sm:mt-5 sm:text-2xl'>
             We can't wait for you to get started.{' '}
             <span className='text-white bg-transparent'>
-              Please choose a plan to continue to your 30 Day Free Trial.
+              Please choose a plan to continue to your 30 day Free Trial.
             </span>
           </p>
         </div>
       </div>
 
-      <div className='mt-16 bg-white pb-12 lg:mt-20 lg:pb-20'>
+      <div className='mt-16 bg-white lg:mt-20'>
         <div className='relative z-0'>
           <div className='absolute inset-0 h-5/6 bg-gray-900 lg:h-2/3'></div>
           <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -65,7 +97,7 @@ export const PricingPage = () => {
                             </svg>
                           </div>
                           <p className='ml-3 text-base font-medium text-gray-500'>
-                            For Up To 100 Jobs a Month
+                            For Up To 150 Jobs a Month
                           </p>
                         </li>
 
@@ -118,10 +150,11 @@ export const PricingPage = () => {
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
                           <span
+                            onClick={() => handleCheckout('price_1I7k8FLjqDOPvfebtbgR52ZJ')}
                             className='block cursor-pointer w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-blue-600 hover:bg-gray-50'
                             aria-describedby='tier-hobby'
                           >
-                            Start your trial
+                            Start your free trial
                           </span>
                         </div>
                       </div>
@@ -181,7 +214,7 @@ export const PricingPage = () => {
                           </svg>
                         </div>
                         <p className='ml-3 text-base font-medium text-gray-500'>
-                          For Businesses That Do 100-500 Jobs a month
+                          For Businesses That Do 150-500 Jobs a month
                         </p>
                       </li>
 
@@ -285,13 +318,13 @@ export const PricingPage = () => {
                     </ul>
                     <div className='mt-10'>
                       <div className='rounded-lg shadow-md'>
-                        <a
-                          href='#'
-                          className='block w-full text-center rounded-lg border border-transparent bg-blue-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-blue-700'
+                        <span
+                          onClick={() => handleCheckout('price_1I7k8RLjqDOPvfebUSaIBKps')}
+                          className='block w-full text-center cursor-pointer rounded-lg border border-transparent bg-blue-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-blue-700'
                           aria-describedby='tier-growth'
                         >
-                          Start your trial
-                        </a>
+                          Start your free trial
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -306,7 +339,7 @@ export const PricingPage = () => {
                           className='text-center text-2xl font-medium text-gray-900'
                           id='tier-scale'
                         >
-                          Enterprise
+                          Super Professional
                         </h3>
                         <div className='mt-4 flex items-center justify-center'>
                           <span className='px-3 flex items-start text-5xl tracking-tight text-gray-900'>
@@ -392,7 +425,7 @@ export const PricingPage = () => {
                       <div className='mt-8'>
                         <div className='rounded-lg shadow-md'>
                           <a
-                            href='#'
+                            href='mailto:fritz@workhorsesw.com?subject=Enterprise%20Pricing%20Inquiry'
                             className='block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-blue-600 hover:bg-gray-50'
                             aria-describedby='tier-scale'
                           >

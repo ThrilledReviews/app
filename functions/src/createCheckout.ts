@@ -59,7 +59,6 @@ export const createCheckoutSession = functions.firestore
       metadata = {},
       tax_rates = [],
       allow_promotion_codes = false,
-      trial_from_plan = true,
       line_items,
       billing_address_collection = 'required',
     } = snap.data();
@@ -87,12 +86,13 @@ export const createCheckoutSession = functions.firestore
                 {
                   price,
                   tax_rates,
+                  quantity: 1,
                 },
               ],
           mode: 'subscription',
           allow_promotion_codes,
           subscription_data: {
-            trial_from_plan,
+            trial_period_days: 30,
             metadata,
           },
           success_url,
