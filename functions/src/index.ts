@@ -9,6 +9,8 @@ import { createCheckoutSession } from './createCheckout';
 import { sendTestFeedbackRequest } from './testFeedbackRequest';
 import { handleTestTextResponse } from './testTextResponse';
 import { handleTestRedirect } from './testRedirect';
+import { handleZapierTestCreds } from './zapierTestCreds';
+import { handleZapierRequestFeedback } from './zapierRequestFeedback';
 
 admin.initializeApp();
 
@@ -27,3 +29,6 @@ export const testTextResponse = functions.https.onRequest(handleTestTextResponse
 export const testRedirect = functions.https.onRequest(handleTestRedirect);
 
 export const createCheckout = createCheckoutSession;
+
+export const zapierTestCreds = functions.https.onRequest(handleZapierTestCreds);
+export const zapierRequestFeedback = functions.https.onRequest(handleZapierRequestFeedback);
