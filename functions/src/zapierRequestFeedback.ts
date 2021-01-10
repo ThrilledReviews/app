@@ -24,14 +24,14 @@ export const handleZapierRequestFeedback = async (req: https.Request, res: Respo
 
   if (phoneNumber.isValid()) {
     await twilio.messages.create({
-      to: phoneNumber.number.toString(),
+      to: phoneNumber.number as string,
       body: userDoc.data().outreachMessage,
       from,
     });
     const feedbackRequest = await (
       await userDoc.ref.collection('feedbackRequests').add({
         customerName,
-        customerPhone: phoneNumber.number.toString(),
+        customerPhone: phoneNumber.number,
         createdDate: new Date(),
         resultNumber: -1,
         reviewLinkClicked: false,

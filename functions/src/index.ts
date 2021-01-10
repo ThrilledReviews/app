@@ -31,4 +31,5 @@ export const testRedirect = functions.https.onRequest(handleTestRedirect);
 export const createCheckout = createCheckoutSession;
 
 export const zapierTestCreds = functions.https.onRequest(handleZapierTestCreds);
+
 export const zapierRequestFeedback = functions.https.onRequest(handleZapierRequestFeedback);
