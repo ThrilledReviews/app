@@ -14,19 +14,17 @@ export const OnboardingPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await firebase
-      .functions()
-      .httpsCallable('onboardUser')({
-        fullName,
-        businessName,
-        reviewUrl,
-        businessPhoneNumber,
-        notificationPhoneNumber,
-        notificationsEnabled,
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+    const response = await firebase.functions().httpsCallable('onboardUser')({
+      fullName,
+      businessName,
+      reviewUrl,
+      businessPhoneNumber,
+      notificationPhoneNumber,
+      notificationsEnabled,
+    });
+    if (response.data.status !== 204) {
+      setError(response.data.message);
+    }
   };
 
   return (
@@ -51,7 +49,7 @@ export const OnboardingPage = () => {
                 <p className='mt-2 max-w-2xl text-sm text-gray-500'>
                   Need Help Getting Set Up?{' '}
                   <a
-                    href='mailto:fritz@workhorsesw.com'
+                    href='mailto:fritz@fivesfilter.com'
                     target='_blank'
                     rel='noreferrer'
                     className='text-blue-500'

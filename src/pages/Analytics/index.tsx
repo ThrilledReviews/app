@@ -200,7 +200,7 @@ export const AnalyticsPage = () => {
                       Settings
                     </Link>
                     <a
-                      href={`mailto:fritz@workhorsesw.com?subject=${encodeURIComponent(
+                      href={`mailto:fritz@fivesfilter.com?subject=${encodeURIComponent(
                         'FivesFilter Support Request for Account ' + user?.uid
                       )}`}
                       target='_blank'
@@ -303,7 +303,7 @@ export const AnalyticsPage = () => {
                 Analytics
               </Link>
               <a
-                href='mailto:fritz@workhorsesw.com'
+                href='mailto:fritz@fivesfilter.com'
                 target='_blank'
                 rel='noreferrer'
                 className='mt-1 block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 hover:bg-blue-600'

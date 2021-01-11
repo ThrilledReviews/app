@@ -169,7 +169,7 @@ export const SettingsPage = () => {
                       Settings
                     </Link>
                     <a
-                      href={`mailto:fritz@workhorsesw.com?subject=${encodeURIComponent(
+                      href={`mailto:fritz@fivesfilter.com?subject=${encodeURIComponent(
                         'FivesFilter Support Request for Account ' + user?.uid
                       )}`}
                       target='_blank'
@@ -266,7 +266,7 @@ export const SettingsPage = () => {
                 Analytics
               </Link>
               <a
-                href='mailto:fritz@workhorsesw.com'
+                href='mailto:fritz@fivesfilter.com'
                 target='_blank'
                 rel='noreferrer'
                 className='mt-1 block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 hover:bg-blue-600'
@@ -433,7 +433,7 @@ export const SettingsPage = () => {
                   rel='noreferrer'
                   target='_blank'
                   className='text-blue-500'
-                  href='mailto:fritz@workhorsesw.com?subject=Change%20Default%20Messages'
+                  href='mailto:fritz@fivesfilter.com?subject=Change%20Default%20Messages'
                 >
                   Contact Support
                 </a>

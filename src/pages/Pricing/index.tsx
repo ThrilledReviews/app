@@ -450,7 +450,7 @@ export const PricingPage = () => {
                                   : 'price_1I7k8RLjqDOPvfebUSaIBKps'
                               )
                             }
-                            href='mailto:fritz@workhorsesw.com?subject=Enterprise%20Pricing%20Inquiry'
+                            href='mailto:fritz@fivesfilter.com?subject=Enterprise%20Pricing%20Inquiry'
                             target='_blank'
                             rel='noreferrer'
                             className='block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base font-medium text-blue-600 hover:bg-gray-50'
