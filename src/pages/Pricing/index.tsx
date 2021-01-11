@@ -50,7 +50,7 @@ export const PricingPage = () => {
             We can't wait for you to get started.{' '}
             <span className='text-white bg-transparent'>
               Please choose a plan to continue
-              {subscription && subscription?.length > 0 ? ' to your 30 day Free Trial.' : '.'}
+              {subscription && subscription?.length > 0 ? ' to your 14 day Free Trial.' : '.'}
             </span>
           </p>
         </div>
