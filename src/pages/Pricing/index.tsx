@@ -135,33 +135,7 @@ export const PricingPage = () => {
                           </svg>
                         </div>
                         <p className='ml-3 text-base font-medium text-gray-500'>
-                          Includes Everything in the Standard Tier
-                        </p>
-                      </li>
-
-                      <li className='flex items-start'>
-                        <div className='flex-shrink-0'>
-                          {/* <!-- Heroicon name: check --> */}
-                          <svg
-                            className='flex-shrink-0 h-6 w-6 text-green-500'
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            stroke='currentColor'
-                            aria-hidden='true'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              strokeWidth='2'
-                              d='M5 13l4 4L19 7'
-                            />
-                          </svg>
-                        </div>
-                        <p className='ml-3 text-base font-medium text-gray-500'>
-                          Typically Results In 40-100 5-Star Reviews/Month
-                          <br />
-                          (Results May Vary)
+                          Includes Everything FivesFilter Has To Offer
                         </p>
                       </li>
 

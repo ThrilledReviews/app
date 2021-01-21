@@ -19,6 +19,7 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   const alreadyAnsweredResponse: string = userDoc.get('alreadyAnsweredResponse');
   const notificationPhoneNumber: string = userDoc.get('notificationPhoneNumber');
   const notificationsEnabled: boolean = userDoc.get('notificationsEnabled');
+  const customDomain: string = userDoc.get('customDomain');
   const reviewUrl: boolean = userDoc.get('reviewUrl');
   const appPhone: string = userDoc.get('appPhone');
 
@@ -113,9 +114,15 @@ The customer's phone number is ${feedbackRequestDoc.data().customerPhone}`,
         customerName: feedbackRequestDoc.data().customerName,
       });
     await feedbackRequestDoc.ref.set({ resultNumber: Number(response) }, { merge: true });
-    twimlResponse.message(`${fiveStarResponse}
+    if (customDomain) {
+      twimlResponse.message(`${fiveStarResponse}
 
-${reviewUrl}`);
+http://${customDomain}/?b=${userDoc.id}&c=${feedbackRequestDoc.id}`);
+    } else {
+      twimlResponse.message(`${fiveStarResponse}
+
+https://reviews.fivesfilter.com/?b=${userDoc.id}&c=${feedbackRequestDoc.id}`);
+    }
 
     setTimeout(() => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });
