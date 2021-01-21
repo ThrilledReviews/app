@@ -19,6 +19,7 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   const alreadyAnsweredResponse: string = userDoc.get('alreadyAnsweredResponse');
   const notificationPhoneNumber: string = userDoc.get('notificationPhoneNumber');
   const notificationsEnabled: boolean = userDoc.get('notificationsEnabled');
+  const reviewUrl: boolean = userDoc.get('reviewUrl');
   const appPhone: string = userDoc.get('appPhone');
 
   const feedbackRequestDoc = (
@@ -114,7 +115,7 @@ The customer's phone number is ${feedbackRequestDoc.data().customerPhone}`,
     await feedbackRequestDoc.ref.set({ resultNumber: Number(response) }, { merge: true });
     twimlResponse.message(`${fiveStarResponse}
 
-https://us-central1-thrill-check.cloudfunctions.net/redirect?b=${userDoc.id}&c=${feedbackRequestDoc.id}`);
+${reviewUrl}`);
 
     setTimeout(() => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });

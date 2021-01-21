@@ -110,6 +110,10 @@ export const AnalyticsPage = () => {
   const lastWeekClickPct = Math.round((lastWeekLinkClicks / lastWeekRequestCount) * 1000) / 10;
   const lastMonthClickPct = Math.round((lastMonthLinkClicks / lastMonthRequestCount) * 1000) / 10;
 
+  const allTimeFsToClickPct = Math.round((allTimeLinkClicks / allTimeFiveStars) * 1000) / 10;
+  const lastWeekFsToClickPct = Math.round((lastWeekLinkClicks / lastWeekFiveStars) * 1000) / 10;
+  const lastMonthFsToClickPct = Math.round((lastMonthLinkClicks / lastMonthFiveStars) * 1000) / 10;
+
   return (
     <>
       <div className='relative flex flex-col'>
@@ -722,10 +726,10 @@ export const AnalyticsPage = () => {
                               <dd>
                                 <div className='text-lg font-medium text-gray-900'>
                                   {showLastWeek
-                                    ? lastWeekFiveStarPct
+                                    ? lastWeekFsToClickPct
                                     : showLastMonth
-                                    ? lastMonthFiveStarPct
-                                    : allTimeFiveStarPct}
+                                    ? lastMonthFsToClickPct
+                                    : allTimeFsToClickPct}
                                   %
                                 </div>
                               </dd>

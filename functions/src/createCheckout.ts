@@ -92,7 +92,6 @@ export const createCheckoutSession = functions.firestore
           mode: 'subscription',
           allow_promotion_codes,
           subscription_data: {
-            trial_period_days: 14,
             metadata,
           },
           success_url,
