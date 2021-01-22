@@ -20,7 +20,6 @@ export const handleTextResponse = async (req: https.Request, res: Response) => {
   const notificationPhoneNumber: string = userDoc.get('notificationPhoneNumber');
   const notificationsEnabled: boolean = userDoc.get('notificationsEnabled');
   const customDomain: string = userDoc.get('customDomain');
-  const reviewUrl: boolean = userDoc.get('reviewUrl');
   const appPhone: string = userDoc.get('appPhone');
 
   const feedbackRequestDoc = (
