@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "thrill-check"
+    "staging": "thrilledreviews-staging",
+    "production": "thrilledreviews"
   }
 }
