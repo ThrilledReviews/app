@@ -26,7 +26,7 @@ export const RegistrationPage = () => {
         <div className='mx-auto w-full max-w-sm lg:w-96'>
           <div>
             <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
-              Start Your FivesFilter Demo Now!
+              Start Your Thrilled Reviews Trial Now!
             </h2>
             <p className='mt-2 text-sm text-gray-600 max-w'>
               Or{' '}

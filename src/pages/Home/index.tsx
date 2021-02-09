@@ -93,7 +93,7 @@ export const HomePage = () => {
               <Link to={homeRoute}>
                 <div className='flex items-center px-2 lg:px-0 xl:w-64'>
                   <div className='flex-shrink-0'>
-                    <h1 className='text-3xl text-white'>FivesFilter</h1>
+                    <h1 className='text-3xl text-white font-bold'>Thrilled Reviews</h1>
                   </div>
                 </div>
               </Link>
@@ -603,10 +603,6 @@ export const HomePage = () => {
                         Welcome! Here's how to get started:
                       </h3>
                       <div className='mt-2'>
-                        <p className='text-sm mb-2 text-gray-500'>
-                          You're currently looking at the demo version of FivesFilter. It's intended
-                          to give you an idea of what FivesFilter does and how it's used.
-                        </p>
                         <hr />
                         <p className='text-sm mt-2 text-gray-800'>
                           Try clicking the button below to send yourself a test feedback request

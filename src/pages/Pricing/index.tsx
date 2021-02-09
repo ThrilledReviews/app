@@ -41,7 +41,7 @@ export const PricingPage = () => {
       <div className='pt-8 px-4 sm:px-6 lg:px-8 lg:pt-10'>
         <div className='text-center'>
           <h2 className='text-lg leading-6 font-semibold text-blue-500 uppercase tracking-wider'>
-            FivesFilter Pricing
+            Thrilled Reviews Pricing
           </h2>
           <p className='mt-3 text-3xl font-extrabold text-white sm:text-4xl lg:text-5xl'>
             The Right Price For Your Business
@@ -135,7 +135,7 @@ export const PricingPage = () => {
                           </svg>
                         </div>
                         <p className='ml-3 text-base font-medium text-gray-500'>
-                          Includes Everything FivesFilter Has To Offer
+                          Includes Everything Thrilled Reviews Has To Offer
                         </p>
                       </li>
 
@@ -194,7 +194,7 @@ export const PricingPage = () => {
                           className='block w-full text-center cursor-pointer rounded-lg border border-transparent bg-blue-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-blue-700'
                           aria-describedby='tier-growth'
                         >
-                          Subscribe to Start Using FivesFilter
+                          Subscribe to Start Using Thrilled Reviews
                         </span>
                       </div>
                     </div>

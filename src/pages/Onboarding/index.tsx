@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react';
 import firebase from 'firebase/app';
 import { FormEvent, useState } from 'react';
+import ParsePhoneNumber, { AsYouType } from 'libphonenumber-js';
 
 export const OnboardingPage = () => {
   const [helpModalOpen, setHelpModalOpen] = useState(false);
@@ -9,8 +10,10 @@ export const OnboardingPage = () => {
   const [businessName, setBusinessName] = useState('');
   const [reviewUrl, setReviewUrl] = useState('');
   const [businessPhoneNumber, setBusinessPhoneNumber] = useState('');
+  const [shownBusinessPhoneNumber, setShownBusinessPhoneNumber] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [notificationPhoneNumber, setNotificationPhoneNumber] = useState('');
+  const [shownNotificationPhoneNumber, setShownNotificationPhoneNumber] = useState('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,6 +30,18 @@ export const OnboardingPage = () => {
     }
   };
 
+  const handleBusinessPhoneNumberChange = (e: any) => {
+    const value = new AsYouType('US').input(e.target.value);
+    setBusinessPhoneNumber(ParsePhoneNumber(value, 'US')?.number as string);
+    setShownBusinessPhoneNumber(value);
+  };
+
+  const handleNotificationPhoneNumberChange = (e: any) => {
+    const value = new AsYouType('US').input(e.target.value);
+    setNotificationPhoneNumber(ParsePhoneNumber(value, 'US')?.number as string);
+    setShownNotificationPhoneNumber(value);
+  };
+
   return (
     <div className='bg-blue-100'>
       <div className='max-w-6xl bg-gray-50 mx-auto p-4 sm:p-6 lg:p-8'>
@@ -34,9 +49,9 @@ export const OnboardingPage = () => {
           <div className='space-y-8 divide-y divide-gray-200 sm:space-y-5'>
             <div>
               <div>
-                <div className='text-center mb-4 sm:mb-6 lg:mb-8 flex justify-center'>
-                  <h1 className='text-3xl max-w-lg p-6 rounded-lg text-center font-medium text-white bg-blue-500'>
-                    FivesFilter Setup
+                <div className='text-center mb-4 flex justify-center'>
+                  <h1 className='text-3xl max-w-lg p-2 md:p-6 rounded-lg text-center font-medium text-gray-800'>
+                    Thrilled Reviews Onboarding
                   </h1>
                 </div>
                 <hr className='p-2' />
@@ -47,15 +62,8 @@ export const OnboardingPage = () => {
                   Just a few quick questions to get you started
                 </p>
                 <p className='mt-2 max-w-2xl text-sm text-gray-500'>
-                  Need Help Getting Set Up?{' '}
-                  <a
-                    href='mailto:fritz@fivesfilter.com'
-                    target='_blank'
-                    rel='noreferrer'
-                    className='text-blue-500'
-                  >
-                    Send us an email
-                  </a>
+                  Need help getting set up?{' '}
+                  <span className='text-blue-500'>Email Us - support@thrilledreviews.com</span>
                 </p>
               </div>
 
@@ -131,16 +139,14 @@ export const OnboardingPage = () => {
                   <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5'>
                     <label className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'>
                       Your Business's Phone Number
-                      <br />
-                      <span className='text-gray-500'>(+1 followed by ten more digits)</span>
                     </label>
                     <div className='mt-1 sm:mt-0 sm:col-span-2'>
                       <div className='max-w-lg flex rounded-md shadow-sm'>
                         <input
                           required
-                          value={businessPhoneNumber}
-                          onChange={(e) => setBusinessPhoneNumber(e.target.value)}
-                          placeholder='+15558984234'
+                          value={shownBusinessPhoneNumber}
+                          onChange={(e) => handleBusinessPhoneNumberChange(e)}
+                          placeholder='(555) 898-4234'
                           type='text'
                           className='flex-1 block w-full focus:ring-blue-500 focus:border-blue-500 min-w-0 rounded-md sm:text-sm border-gray-300'
                         />
@@ -172,114 +178,19 @@ export const OnboardingPage = () => {
                       htmlFor='notificationPhoneNumber'
                       className='block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2'
                     >
-                      Your Cell Phone #<br />
-                      <span className='text-gray-500'>
-                        (For optional notifications - Starts with +1)
-                      </span>
+                      Your Cell Phone #
                     </label>
                     <div className='mt-1 sm:mt-0 sm:col-span-2'>
                       <div className='max-w-lg flex rounded-md shadow-sm'>
                         <input
                           required
-                          value={notificationPhoneNumber}
-                          onChange={(e) => setNotificationPhoneNumber(e.target.value)}
-                          placeholder='+15559058234'
+                          value={shownNotificationPhoneNumber}
+                          onChange={(e) => handleNotificationPhoneNumberChange(e)}
+                          placeholder='(555) 905-8234'
                           type='text'
                           autoComplete='phone'
                           className='flex-1 block w-full focus:ring-blue-500 focus:border-blue-500 min-w-0 rounded-md sm:text-sm border-gray-300'
                         />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='divide-y divide-gray-200 pt-8 space-y-6 sm:pt-10 sm:space-y-5'>
-              <div className='text-center'>
-                <h3 className='text-lg leading-6 font-medium text-gray-900'>Extra Terms Of Use</h3>
-                <p className='mt-1 text-sm text-gray-500'>
-                  There are some important legal requirements for using this service that we need
-                  you to understand.
-                  <br />
-                  Select each box to confirm that you've read and understand the requirements.
-                </p>
-              </div>
-              <div className='space-y-6 sm:space-y-5 divide-y divide-gray-200'>
-                <div className='pt-6 sm:pt-5'>
-                  <div role='group' aria-labelledby='label-email'>
-                    <div className='sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline'>
-                      <div />
-                      <div className='mt-4 sm:mt-0 sm:col-span-2'>
-                        <div className='max-w-lg space-y-4'>
-                          <div className='relative flex items-center'>
-                            <div className='flex items-center h-5'>
-                              <input
-                                required
-                                id='comments'
-                                name='comments'
-                                type='checkbox'
-                                className='focus:ring-blue-500 h-4 w-4 text-black border-gray-500 rounded'
-                              />
-                            </div>
-                            <div className='ml-3 text-sm'>
-                              <label htmlFor='comments' className='font-medium text-red-700'>
-                                No Promotional Messages
-                              </label>
-                              <p className='text-gray-500'>
-                                I will NEVER promote, sell, or market anything whatsoever with the
-                                FivesFilter service. I will send transactional messages ONLY.
-                              </p>
-                            </div>
-                          </div>
-                          <div>
-                            <div className='relative flex items-start'>
-                              <div className='flex items-center h-5'>
-                                <input
-                                  required
-                                  id='candidates'
-                                  name='candidates'
-                                  type='checkbox'
-                                  className='focus:ring-blue-500 h-4 w-4 text-black border-gray-500 rounded'
-                                />
-                              </div>
-                              <div className='ml-3 text-sm'>
-                                <label htmlFor='candidates' className='font-medium text-red-700'>
-                                  Recent, Express Consent
-                                </label>
-                                <p className='text-gray-500'>
-                                  I will ONLY use the FivesFilter service to contact existing
-                                  customers who have knowingly given me their phone #, and whom I
-                                  have served in the last 3 days.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div>
-                            <div className='relative flex items-start'>
-                              <div className='flex items-center h-5'>
-                                <input
-                                  required
-                                  id='offers'
-                                  name='offers'
-                                  type='checkbox'
-                                  className='focus:ring-blue-500 h-4 w-4 text-black border-gray-500 rounded'
-                                />
-                              </div>
-                              <div className='ml-3 text-sm'>
-                                <label htmlFor='offers' className='font-medium text-red-700'>
-                                  Only For Soliciting Feedback
-                                </label>
-                                <p className='text-gray-500'>
-                                  I will ONLY use the FivesFilter service to solicit customer
-                                  feedback & reviews, NEVER for any other purpose
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <p className='text-center text-red-500 font-bold'>
-                            Breaking These Terms Could Mean Breaking Federal Law
-                          </p>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -294,7 +205,7 @@ export const OnboardingPage = () => {
                 type='submit'
                 className='ml-3 inline-flex justify-center py-4 px-8 border border-transparent shadow-sm text-2xl font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
               >
-                Start The Demo!
+                Start My Trial!
               </button>
             </div>
             <p className='text-red-500'>{error}</p>
@@ -404,7 +315,7 @@ export const OnboardingPage = () => {
                           rel='noreferrer'
                           href='https://support.google.com/business/answer/7035772?hl=en'
                         >
-                          Click to visit Google's Article About this
+                          Click here to visit Google's documentation
                         </a>
                       </div>
                     </div>
