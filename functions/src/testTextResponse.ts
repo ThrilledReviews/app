@@ -98,7 +98,7 @@ export const handleTestTextResponse = async (req: https.Request, res: Response) 
     );
     twimlResponse.message(`${fiveStarResponse}
 
-https://us-central1-thrill-check.cloudfunctions.net/testRedirect?b=${userDoc.id}`);
+https://us-central1-thrilledreviews-staging.cloudfunctions.net/testRedirect?b=${userDoc.id}`);
 
     setTimeout(() => {
       res.writeHead(200, { 'Content-Type': 'text/xml' });

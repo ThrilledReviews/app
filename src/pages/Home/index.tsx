@@ -441,7 +441,7 @@ export const HomePage = () => {
                 {userDoc?.testResultNumber && (
                   <MainListItem
                     feedbackRequest={{
-                      source: 'Example Input',
+                      source: 'example',
                       customerName: userDoc?.fullName,
                       createdDate: userDoc?.testRequestCreatedDate,
                       customerPhone: userDoc?.notificationPhoneNumber,
