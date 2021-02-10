@@ -14,7 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Elements
       stripe={loadStripe(
-        'pk_live_51HzhyWLjqDOPvfebFx6IB2VX0ABcpz8mt8MRQ2SXVWjbz5zo2uWJergpucp5fsWF13rpoEsySpWr2WjKjXLmVU5W00vhX2yK7Y'
+        'pk_test_51I7SjHLK5eTx3dXTPGXUIbpTrN1KjBYa8HtfndTSoyNGcyYKOA6BkALk9g9DVerHpAXi9x5uGDMXOWKcM9QEYhwE00xVVxMkxn'
       )}
     >
       <App />
