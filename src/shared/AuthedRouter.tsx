@@ -6,7 +6,7 @@ import { OnboardingPage, HomePage } from '../pages';
 import { analyticsRoute, homeRoute, indexRoute, settingsRoute } from '../constants/routes';
 import { SettingsPage } from '../pages/Settings';
 import { AnalyticsPage } from '../pages/Analytics';
-import { PricingPage } from '../pages/Pricing/index2';
+import { PricingPage } from '../pages/Pricing';
 
 export const AuthedRouter = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
