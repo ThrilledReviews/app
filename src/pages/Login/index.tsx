@@ -33,7 +33,7 @@ export const LoginPage = () => {
             <p className='mt-2 text-sm text-gray-600 max-w'>
               Or{' '}
               <Link to={registerRoute} className='font-medium text-blue-600 hover:text-blue-500'>
-                Start Your Demo {'>'}
+                Start Your Trial {'>'}
               </Link>
             </p>
           </div>

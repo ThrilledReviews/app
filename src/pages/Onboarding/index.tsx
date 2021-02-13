@@ -155,7 +155,7 @@ export const OnboardingPage = () => {
                   </div>
                 </div>
                 <div className='mt-6 sm:mt-5 space-y-6 sm:space-y-5 sm:border-t sm:border-gray-200 sm:pt-5'>
-                  <div>
+                  <div className='flex justify-center items-center'>
                     <div className='mt-1 inline'>
                       <input
                         checked={notificationsEnabled}
