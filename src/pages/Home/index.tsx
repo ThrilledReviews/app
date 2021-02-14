@@ -28,7 +28,6 @@ export const HomePage = () => {
     const value = new AsYouType('US').input(e.target.value);
     setCustomerPhone(ParsePhoneNumber(value, 'US')?.number as string);
     setShownCustomerPhone(value);
-    console.log(customerPhone);
   };
 
   useEffect(() => {

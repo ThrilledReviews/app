@@ -22,13 +22,11 @@ export const PricingPage = () => {
         success_url: window.location.origin,
         cancel_url: window.location.origin,
       });
-    console.log('test');
     docRef.onSnapshot((snap) => {
       const { error, sessionId } = snap.data() as any;
-      console.log(sessionId);
       if (error) {
         // Show an error to your customer and
-        // inspect your Cloud Function logs in the Firebase console.
+        // inspect your Cloud Function logs in the Firebase console
         alert(`An error occured: ${error.message}`);
       }
       if (sessionId) {

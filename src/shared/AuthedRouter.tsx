@@ -17,7 +17,7 @@ declare global {
 export const AuthedRouter = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
   const [userDoc, userDocLoading] = useDocumentData(
-    firebase.firestore().collection('users').doc(user?.uid)
+    firebase.firestore().collection('users').doc(user.uid)
   );
 
   const [subscriptionData, subscriptionLoading] = useCollectionData(
@@ -30,6 +30,13 @@ export const AuthedRouter = () => {
   );
 
   if (userLoading || userDocLoading || subscriptionLoading) return null;
+
+  if (user) {
+    window.HelpCrunch('userAuth', {
+      email: user.email,
+      user_id: user.uid,
+    });
+  }
   if (!userDoc) return <OnboardingPage />;
 
   if (subscriptionData?.length === 0) return <PricingPage />;
