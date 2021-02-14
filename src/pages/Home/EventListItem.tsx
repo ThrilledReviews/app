@@ -26,7 +26,7 @@ export const EventListItem = ({ event }: { event: AppEvent }) => (
           >
             {event.eventName}
           </h3>
-          <p className='text-sm text-gray-500'>{event.createdDate.toDate().toLocaleString()}</p>
+          <p className='text-sm text-gray-500'>{event.createdDate.toDate().toLocaleDateString()}</p>
         </div>
         <p className='text-sm text-gray-500'>{event.message}</p>
         {(event.event === 'one_star_review' ||

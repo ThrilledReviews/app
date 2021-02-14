@@ -5,8 +5,8 @@ import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firesto
 import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
 import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
-import { MainListItem /*FeedbackRequest*/ } from './MainListItem';
-import { /*AppEvent,*/ EventListItem } from './EventListItem';
+import { MainListItem } from './MainListItem';
+import { EventListItem } from './EventListItem';
 
 export const HomePage = () => {
   const [customerName, setCustomerName] = useState('');
@@ -93,7 +93,7 @@ export const HomePage = () => {
               <Link to={homeRoute}>
                 <div className='flex items-center px-2 lg:px-0 xl:w-64'>
                   <div className='flex-shrink-0'>
-                    <h1 className='text-3xl text-white font-bold'>Thrilled Reviews</h1>
+                    <h1 className='text-3xl text-white'>Thrilled Reviews</h1>
                   </div>
                 </div>
               </Link>
@@ -459,7 +459,7 @@ export const HomePage = () => {
                   {events?.map((event: any, index: number) => (
                     <EventListItem event={event} key={index} />
                   ))}
-                  {/* {!subscriptionData?.[0] && userDoc?.testRedirectLinkClicked && !loading && (
+                  {userDoc?.testRedirectLinkClicked && (
                     <EventListItem
                       event={{
                         createdDate: userDoc?.testRedirectClickedDate,
@@ -470,7 +470,7 @@ export const HomePage = () => {
                       }}
                     />
                   )}
-                  {!subscriptionData?.[0] && userDoc?.testReviewEvent && !loading && (
+                  {userDoc?.testReviewEvent && (
                     <EventListItem
                       event={{
                         createdDate: userDoc?.testReviewEventDate,
@@ -481,7 +481,7 @@ export const HomePage = () => {
                       }}
                     />
                   )}
-                  {!subscriptionData?.[0] &&
+                  {/* {!subscriptionData?.[0] &&
                     !loading &&
                     demoEvents.map((event, index) => <EventListItem event={event} key={index} />)} */}
                 </ul>
