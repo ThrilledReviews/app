@@ -20,9 +20,6 @@ export const MainListItem = ({ feedbackRequest }: { feedbackRequest: FeedbackReq
               <h2 className='text-sm font-medium'>
                 <span className='absolute inset-0' aria-hidden='true'></span>
                 {feedbackRequest.customerName}{' '}
-                {feedbackRequest.source && (
-                  <span className='text-gray-500'>via {feedbackRequest?.source}</span>
-                )}
               </h2>
             </span>
           </div>

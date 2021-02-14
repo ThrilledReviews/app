@@ -16,7 +16,7 @@ export const handleZapierRequestFeedback = async (req: https.Request, res: Respo
   if (userDoc.data() && !userDoc.data().appPhone) {
     const { phoneNumber: newPhoneNumber } = await twilio.incomingPhoneNumbers.create({
       areaCode: userDoc.get('businessAreaCode'),
-      smsUrl: 'https://us-central1-thrill-check.cloudfunctions.net/textResponse',
+      smsUrl: 'https://us-central1-thrilledreviews.cloudfunctions.net/textResponse',
     });
     await userDoc.ref.set({ appPhone: newPhoneNumber }, { merge: true });
     from = newPhoneNumber;
