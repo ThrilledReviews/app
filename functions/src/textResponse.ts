@@ -120,7 +120,7 @@ http://${customDomain}/?b=${userDoc.id}&c=${feedbackRequestDoc.id}`);
     } else {
       twimlResponse.message(`${fiveStarResponse}
 
-https://reviews.fivesfilter.com/?b=${userDoc.id}&c=${feedbackRequestDoc.id}`);
+https://reviews.thrilledreviews.com/?b=${userDoc.id}&c=${feedbackRequestDoc.id}`);
     }
 
     setTimeout(() => {
