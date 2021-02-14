@@ -4,6 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
 import { Transition } from '@headlessui/react';
+import ParsePhoneNumber, { AsYouType } from 'libphonenumber-js';
 import { analyticsRoute, homeRoute, settingsRoute } from '../../constants/routes';
 import { MainListItem } from './MainListItem';
 import { EventListItem } from './EventListItem';
@@ -11,6 +12,7 @@ import { EventListItem } from './EventListItem';
 export const HomePage = () => {
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
+  const [shownCustomerPhone, setShownCustomerPhone] = useState('');
   const [profileOpen, setProfileOpen] = useState(false);
   const [welcomeModalOpen, setWelcomeModalOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,6 +23,13 @@ export const HomePage = () => {
     any,
     any
   ];
+
+  const handleCustomerPhoneChange = (e: any) => {
+    const value = new AsYouType('US').input(e.target.value);
+    setCustomerPhone(ParsePhoneNumber(value, 'US')?.number as string);
+    setShownCustomerPhone(value);
+    console.log(customerPhone);
+  };
 
   useEffect(() => {
     if (userDoc?.sentTestRequest === true) {
@@ -365,10 +374,10 @@ export const HomePage = () => {
                           <div className='mt-3 ml-2 sm:ml-0'>
                             <label className='text-sm'>Customer Phone</label>
                             <input
-                              value={customerPhone}
-                              onChange={(e) => setCustomerPhone(e.target.value)}
+                              value={shownCustomerPhone}
+                              onChange={(e) => handleCustomerPhoneChange(e)}
                               type='text'
-                              placeholder='+15558982222'
+                              placeholder='(555) 555-4545'
                               className='inline-flex items-center justify-center px-4 py-2 ml-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 xl:ml-0 xl:w-full'
                             />
                           </div>
