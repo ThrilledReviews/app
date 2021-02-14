@@ -8,10 +8,16 @@ import { SettingsPage } from '../pages/Settings';
 import { AnalyticsPage } from '../pages/Analytics';
 import { PricingPage } from '../pages/Pricing';
 
+declare global {
+  interface Window {
+    HelpCrunch: any;
+  }
+}
+
 export const AuthedRouter = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
   const [userDoc, userDocLoading] = useDocumentData(
-    firebase.firestore().collection('users').doc(user.uid)
+    firebase.firestore().collection('users').doc(user?.uid)
   );
 
   const [subscriptionData, subscriptionLoading] = useCollectionData(
@@ -24,7 +30,6 @@ export const AuthedRouter = () => {
   );
 
   if (userLoading || userDocLoading || subscriptionLoading) return null;
-
   if (!userDoc) return <OnboardingPage />;
 
   if (subscriptionData?.length === 0) return <PricingPage />;

@@ -62,8 +62,7 @@ export const OnboardingPage = () => {
                   Just a few quick questions to get you started
                 </p>
                 <p className='mt-2 max-w-2xl text-sm text-gray-500'>
-                  Need help getting set up?{' '}
-                  <span className='text-blue-500'>Email Us - support@thrilledreviews.com</span>
+                  Need help getting set up? Use the chat widget in the bottom right
                 </p>
               </div>
 
