@@ -418,7 +418,7 @@ export const SettingsPage = () => {
               rel='noreferrer'
               target='_blank'
               className='text-blue-500 text-lg'
-              href='https://zapier.com/developer/public-invite/124668/85b6453e27e8e658c8b4f6fc5baa7f5f/'
+              href='https://zapier.com/developer/public-invite/127370/09f874668edfecdc48014b0417967439/'
             >
               <p className='text-center py-2 px-4 bg-gray-200 c'>
                 Add The Private Zapier Integration
