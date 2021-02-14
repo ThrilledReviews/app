@@ -26,7 +26,7 @@ export const handleRequestFeedback = async (
   if (!from) {
     const { phoneNumber } = await twilio.incomingPhoneNumbers.create({
       areaCode: userDoc.get('businessAreaCode'),
-      smsUrl: 'https://us-central1-thrill-check.cloudfunctions.net/textResponse',
+      smsUrl: 'https://us-central1-thrilledreviews.cloudfunctions.net/textResponse',
     });
     await userDoc.ref.set({ appPhone: phoneNumber }, { merge: true });
     from = phoneNumber;
