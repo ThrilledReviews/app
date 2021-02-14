@@ -203,16 +203,6 @@ export const HomePage = () => {
                     >
                       Settings
                     </Link>
-                    <a
-                      href={`mailto:fritz@fivesfilter.com?subject=${encodeURIComponent(
-                        'FivesFilter Support Request for Account ' + user?.uid
-                      )}`}
-                      target='_blank'
-                      rel='noreferrer'
-                      className='px-3 py-2 rounded-md text-sm font-medium text-blue-200 hover:text-white'
-                    >
-                      Support
-                    </a>
                   </div>
                   {/* <!-- Profile dropdown --> */}
                   <div className='ml-4 relative flex-shrink-0'>
@@ -307,14 +297,6 @@ export const HomePage = () => {
               >
                 Analytics
               </Link>
-              <a
-                href='mailto:fritz@fivesfilter.com'
-                target='_blank'
-                rel='noreferrer'
-                className='mt-1 block px-3 py-2 rounded-md text-base font-medium text-blue-200 hover:text-blue-100 hover:bg-blue-600'
-              >
-                Support
-              </a>
             </div>
             <div className='pt-4 pb-3 border-t border-blue-800'>
               <div className='px-2'>
