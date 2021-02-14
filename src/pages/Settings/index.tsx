@@ -377,9 +377,7 @@ export const SettingsPage = () => {
                   htmlFor='notificationsEnabled'
                   className='inline text-sm font-medium text-gray-700'
                 >
-                  I Would Like To Be Notified if I get a 1-4 Star Review
-                  <br />
-                  <small>(Message & Data Rates May Apply)</small>
+                  I would like to be notified if I get a 1-4 star review
                 </label>
               </div>
               <div className='flex justify-end'>
