@@ -430,7 +430,7 @@ export const SettingsPage = () => {
               <code className='bg-gray-200 text-sm sm:text-lg'>{userDoc?.apiKey}</code>
             </p>
             <p className='text-center text-sm text-red-400'>
-              Contact Support immediately if you accidentally share this key with anyone but Zapier.
+              Contact support immediately if you accidentally share this key with anyone but Zapier.
             </p>
           </form>
         </main>
