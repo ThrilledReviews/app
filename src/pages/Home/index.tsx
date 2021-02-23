@@ -101,7 +101,9 @@ export const HomePage = () => {
               <Link to={homeRoute}>
                 <div className='flex items-center px-2 lg:px-0 xl:w-64'>
                   <div className='flex-shrink-0'>
-                    <h1 className='text-3xl text-white'>Thrilled Reviews</h1>
+                    <h1 className='text-3xl text-white' style={{ fontFamily: 'sriracha' }}>
+                      Thrilled Reviews
+                    </h1>
                   </div>
                 </div>
               </Link>
